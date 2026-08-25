@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>notes | glosse.me</title>
+<meta name="description" content="A microblog, syndicated from Bluesky." />
+<meta property="og:title" content="notes | glosse.me" />
+<meta property="og:description" content="A microblog, syndicated from Bluesky." />
+<meta property="og:url" content="https://glosse.me/notes/" />
+<link rel="stylesheet" href="/styles.css" />
+<script src="/site.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a class="site-title" href="/">glosse.me</a>
+      <nav>
+        <a href="/projects/">projects</a>
+        <a href="/stats/">stats</a>
+        <a href="/notes/" aria-current="page">notes</a>
+        <a href="/about/">about</a>
+        <a href="/contact/">contact</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Switch between light and dark">◐</button>
+      </nav>
+    </header>
+
+    <main>
+      <h1 class="page-title">notes</h1>
+      <p class="lede">
+        Short thoughts, posted to
+        <a href="https://bsky.app/profile/basedgirl.bsky.social">@basedgirl.bsky.social</a>
+        and mirrored here. Post over there, it shows up here.
+      </p>
+
+      <section>
+        <div class="section-heading">
+          <span id="noteCount">posts</span>
+          <a href="https://bsky.app/profile/basedgirl.bsky.social">follow ↗</a>
+        </div>
+        <ul class="note-list" id="noteList">
+          <li class="state">Loading notes…</li>
+        </ul>
+        <div style="margin-top:1.25rem">
+          <button id="loadMore" class="theme-toggle" style="width:auto;padding:0.45rem 0.9rem;height:auto;display:none">
+            load more
+          </button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <span>© <span id="year"></span> glosse.me</span>
+    <span><a href="https://github.com/jubilancy">github</a> · <a href="https://bsky.app/profile/basedgirl.bsky.social">bluesky</a></span>
+  </footer>
+
+  <script>
+  var HANDLE = 'basedgirl.bsky.social';
+  var API = 'https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed';
+  var cursor = null;
+  var total = 0;
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  // Bluesky facets carry link ranges as byte offsets into the UTF-8 text.
+  function renderText(record) {
+    var text = record.text || '';
+    var facets = record.facets || [];
+    var links = facets.filter(function (f) {
+      return (f.features || []).some(function (ft) {
+        return ft.$type === 'app.bsky.richtext.facet#link';
+      });
+    });
+
+    if (!links.length) return escapeHtml(text);
+
+    var bytes = new TextEncoder().encode(text);
+    var decoder = new TextDecoder();
+    links.sort(function (a, b) { return a.index.byteStart - b.index.byteStart; });
+
+    var out = '';
+    var pos = 0;
+    links.forEach(function (facet) {
+      var uri = facet.features.find(function (f) {
+        return f.$type === 'app.bsky.richtext.facet#link';
+      }).uri;
+      out += escapeHtml(decoder.decode(bytes.slice(pos, facet.index.byteStart)));
+      var label = decoder.decode(bytes.slice(facet.index.byteStart, facet.index.byteEnd));
+      out += '<a href="' + escapeHtml(uri) + '">' + escapeHtml(label) + '</a>';
+      pos = facet.index.byteEnd;
+    });
+    out += escapeHtml(decoder.decode(bytes.slice(pos)));
+    return out;
+  }
+
+  function renderImages(post) {
+    var embed = post.embed;
+    var images = null;
+
+    if (embed && embed.$type === 'app.bsky.embed.images#view') images = embed.images;
+    if (embed && embed.$type === 'app.bsky.embed.recordWithMedia#view' &&
+        embed.media && embed.media.images) images = embed.media.images;
+
+    if (!images || !images.length) return '';
+
+    return '<div class="note-images">' + images.map(function (img) {
+      return '<img src="' + escapeHtml(img.thumb) + '" alt="' +
+             escapeHtml(img.alt || 'Image attached to post') + '" loading="lazy" />';
+    }).join('') + '</div>';
+  }
+
+  function renderNote(item) {
+    var post = item.post;
+    var rkey = post.uri.split('/').pop();
+    var url = 'https://bsky.app/profile/' + HANDLE + '/post/' + rkey;
+    var reposted = item.reason && item.reason.$type === 'app.bsky.feed.defs#reasonRepost';
+
+    var counts = [];
+    if (post.replyCount) counts.push(post.replyCount + ' replies');
+    if (post.repostCount) counts.push(post.repostCount + ' reposts');
+    if (post.likeCount) counts.push(post.likeCount + ' likes');
+
+    return '<li class="note">' +
+      (reposted ? '<p class="repost-tag">reposted</p>' : '') +
+      '<p class="note-text">' + renderText(post.record) + '</p>' +
+      renderImages(post) +
+      '<div class="note-foot">' +
+        '<span>' + timeAgo(post.record.createdAt) +
+          (counts.length ? ' · ' + counts.join(' · ') : '') + '</span>' +
+        '<a href="' + url + '">reply on bluesky ↗</a>' +
+      '</div>' +
+    '</li>';
+  }
+
+  function load(append) {
+    var url = API + '?actor=' + HANDLE + '&limit=25&filter=posts_no_replies' +
+              (cursor ? '&cursor=' + encodeURIComponent(cursor) : '');
+
+    return fetch(url)
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (data) {
+        var list = document.getElementById('noteList');
+        var items = data.feed || [];
+        cursor = data.cursor || null;
+
+        if (!append) list.innerHTML = '';
+        if (!items.length && !total) {
+          list.innerHTML = '<li class="state">No notes yet. First one\'s coming.</li>';
+          return;
+        }
+
+        list.insertAdjacentHTML('beforeend', items.map(renderNote).join(''));
+        total += items.length;
+        document.getElementById('noteCount').textContent = total + ' posts';
+        document.getElementById('loadMore').style.display = cursor ? 'block' : 'none';
+      })
+      .catch(function () {
+        if (!append) {
+          document.getElementById('noteList').innerHTML =
+            '<li class="state">Couldn\'t reach Bluesky. ' +
+            '<a href="https://bsky.app/profile/' + HANDLE + '">Read the feed there instead</a>.</li>';
+        }
+      });
+  }
+
+  document.getElementById('loadMore').addEventListener('click', function () { load(true); });
+  load(false);
+  </script>
+</body>
+</html>

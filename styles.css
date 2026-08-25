@@ -1,0 +1,469 @@
+:root {
+  --bg: #fafafa;
+  --fg: #111111;
+  --muted: #6b7280;
+  --border: #e5e5e5;
+  --card: #ffffff;
+  --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+[data-theme="dark"] {
+  --bg: #0d0d0d;
+  --fg: #eaeaea;
+  --muted: #8a8a8a;
+  --border: #262626;
+  --card: #141414;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--mono);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  flex: 1;
+  width: 100%;
+}
+
+/* ---------- header ---------- */
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 3.5rem;
+}
+
+.site-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--fg);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+nav a {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+nav a:hover,
+nav a:focus-visible { color: var(--fg); }
+
+nav a[aria-current="page"] {
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--fg);
+  border-radius: 6px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-family: inherit;
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover { border-color: var(--muted); }
+
+/* ---------- typography ---------- */
+
+h1.page-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 1rem;
+}
+
+.lede {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.75;
+  margin: 0 0 0.9rem;
+}
+
+.lede a,
+.prose a {
+  color: var(--fg);
+  text-decoration: underline;
+  text-decoration-color: var(--border);
+  text-underline-offset: 3px;
+}
+
+.lede a:hover,
+.prose a:hover { text-decoration-color: var(--fg); }
+
+.prose p {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.75;
+  margin: 0 0 0.9rem;
+}
+
+section { margin-top: 3rem; }
+
+.section-heading {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.section-heading a {
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
+.section-heading a:hover { color: var(--fg); }
+
+/* ---------- link lists ---------- */
+
+.link-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.link-list li { border-bottom: 1px solid var(--border); }
+.link-list li:last-child { border-bottom: none; }
+
+.link-list a {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  text-decoration: none;
+  color: var(--fg);
+  font-size: 0.9rem;
+}
+
+.link-list .name { font-weight: 500; }
+
+.link-list .desc {
+  color: var(--muted);
+  font-size: 0.82rem;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.link-list a:hover .name {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------- repo cards (projects) ---------- */
+
+.repo-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.repo {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+  background: var(--card);
+  transition: border-color 0.15s ease;
+}
+
+.repo:hover { border-color: var(--muted); }
+
+.repo-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.repo-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--fg);
+  text-decoration: none;
+  word-break: break-word;
+}
+
+.repo-name:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.repo-updated {
+  font-size: 0.72rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.repo-desc {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0.45rem 0 0;
+}
+
+.repo-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: 0.6rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--muted);
+  margin-right: 0.35rem;
+  vertical-align: baseline;
+}
+
+/* ---------- notes (bluesky) ---------- */
+
+.note-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.note {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+  background: var(--card);
+}
+
+.note-text {
+  font-size: 0.88rem;
+  line-height: 1.7;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.note-text a {
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.note-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.7rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.note-foot a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.note-foot a:hover { color: var(--fg); }
+
+.note-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.4rem;
+  margin-top: 0.7rem;
+}
+
+.note-images img {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  display: block;
+}
+
+.repost-tag {
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ---------- stats cards ---------- */
+
+.stat-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.stat-cards img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.stat-row img { max-width: 100%; }
+
+/* ---------- states ---------- */
+
+.state {
+  font-size: 0.85rem;
+  color: var(--muted);
+  padding: 1rem 0;
+  line-height: 1.7;
+}
+
+.state a {
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------- contact ---------- */
+
+.connect {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.9rem;
+  font-size: 0.88rem;
+}
+
+.connect a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.connect a:hover {
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contact-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.88rem;
+}
+
+.contact-list li:last-child { border-bottom: none; }
+
+.contact-list .label { color: var(--muted); }
+
+.contact-list a {
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.contact-list a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------- footer ---------- */
+
+footer {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  width: 100%;
+  font-size: 0.78rem;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+footer a { color: var(--muted); }
+
+/* ---------- a11y + responsive ---------- */
+
+:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+@media (max-width: 560px) {
+  .wrap { padding: 1.75rem 1.25rem; }
+  header {
+    margin-bottom: 2.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  nav { justify-content: flex-start; }
+  .link-list .desc { display: none; }
+  footer { flex-direction: column; gap: 0.35rem; }
+}

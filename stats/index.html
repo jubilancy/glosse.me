@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>stats | glosse.me</title>
+<meta name="description" content="GitHub activity stats and language breakdown." />
+<meta property="og:title" content="stats | glosse.me" />
+<meta property="og:description" content="GitHub activity stats and language breakdown." />
+<meta property="og:url" content="https://glosse.me/stats/" />
+<link rel="stylesheet" href="/styles.css" />
+<script src="/site.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a class="site-title" href="/">glosse.me</a>
+      <nav>
+        <a href="/projects/">projects</a>
+        <a href="/stats/" aria-current="page">stats</a>
+        <a href="/notes/">notes</a>
+        <a href="/about/">about</a>
+        <a href="/contact/">contact</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Switch between light and dark">◐</button>
+      </nav>
+    </header>
+
+    <main>
+      <h1 class="page-title">stats</h1>
+      <p class="lede">
+        Commits, reviews, and language mix, rendered live by
+        <a href="https://github.com/stats-organization/github-stats-extended">github-stats-extended</a>.
+        The cards swap theme along with the rest of the site.
+      </p>
+
+      <section>
+        <div class="section-heading">
+          <span>overview</span>
+        </div>
+        <div class="stat-cards">
+          <a href="https://github.com/jubilancy">
+            <img
+              id="statsCard"
+              alt="GitHub stats for jubilancy: commits, pull requests, reviews, and issues"
+              src="https://github-stats-extended.vercel.app/api?username=jubilancy&rank_icon=github&custom_title=eliana%27s%20github%20stats&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage,prs_commented,prs_reviewed,issues_commented&show_icons=true&include_all_commits=true&theme=transparent&hide_border=true"
+            />
+          </a>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-heading">
+          <span>languages</span>
+        </div>
+        <div class="stat-cards">
+          <a href="https://github.com/jubilancy?tab=repositories">
+            <img
+              id="langCard"
+              alt="Most used languages across jubilancy's repositories"
+              src="https://github-stats-extended.vercel.app/api/top-langs?username=jubilancy&layout=compact&langs_count=8&card_width=440&theme=transparent&hide_border=true"
+            />
+          </a>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-heading">
+          <span>pinned</span>
+          <a href="/projects/">all repos</a>
+        </div>
+        <div class="stat-cards">
+          <a href="https://github.com/jubilancy/tools">
+            <img
+              class="pin-card"
+              alt="Repository card for jubilancy/tools"
+              src="https://github-stats-extended.vercel.app/api/pin/?username=jubilancy&repo=tools&theme=transparent&hide_border=true"
+            />
+          </a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <span>© <span id="year"></span> glosse.me</span>
+    <span><a href="https://github.com/jubilancy">github</a> · <a href="https://bsky.app/profile/basedgirl.bsky.social">bluesky</a></span>
+  </footer>
+
+  <script>
+  // Repoint the cards' text colors when the theme flips.
+  (function () {
+    var root = document.documentElement;
+
+    function retheme() {
+      var dark = root.getAttribute('data-theme') === 'dark';
+      var title = dark ? 'eaeaea' : '111111';
+      var text  = dark ? '8a8a8a' : '6b7280';
+      var icon  = dark ? 'eaeaea' : '111111';
+
+      document.querySelectorAll('.stat-cards img').forEach(function (img) {
+        var url = new URL(img.src);
+        url.searchParams.set('title_color', title);
+        url.searchParams.set('text_color', text);
+        url.searchParams.set('icon_color', icon);
+        url.searchParams.set('bg_color', '00000000');
+        img.src = url.toString();
+      });
+    }
+
+    retheme();
+
+    var toggle = document.getElementById('themeToggle');
+    if (toggle) toggle.addEventListener('click', function () { setTimeout(retheme, 0); });
+  })();
+  </script>
+</body>
+</html>

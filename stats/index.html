@@ -4,9 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>stats | glosse.me</title>
-<meta name="description" content="GitHub activity stats and language breakdown." />
+<meta name="description" content="GitHub activity stats, language breakdown, pinned repos, and a gist card." />
 <meta property="og:title" content="stats | glosse.me" />
-<meta property="og:description" content="GitHub activity stats and language breakdown." />
+<meta property="og:description" content="GitHub activity stats, language breakdown, pinned repos, and a gist card." />
 <meta property="og:url" content="https://glosse.me/stats/" />
 <link rel="stylesheet" href="/styles.css" />
 <script src="/site.js"></script>
@@ -28,9 +28,9 @@
     <main>
       <h1 class="page-title">stats</h1>
       <p class="lede">
-        Commits, reviews, and language mix, rendered live by
+        Commits, reviews, languages, pinned repos, and a gist, all rendered live by
         <a href="https://github.com/stats-organization/github-stats-extended">github-stats-extended</a>.
-        The cards swap theme along with the rest of the site.
+        Cards follow the site's light/dark toggle.
       </p>
 
       <section>
@@ -40,7 +40,7 @@
         <div class="stat-cards">
           <a href="https://github.com/jubilancy">
             <img
-              id="statsCard"
+              class="theme-card"
               alt="GitHub stats for jubilancy: commits, pull requests, reviews, and issues"
               src="https://github-stats-extended.vercel.app/api?username=jubilancy&rank_icon=github&custom_title=eliana%27s%20github%20stats&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage,prs_commented,prs_reviewed,issues_commented&show_icons=true&include_all_commits=true&theme=transparent&hide_border=true"
             />
@@ -50,14 +50,28 @@
 
       <section>
         <div class="section-heading">
-          <span>languages</span>
+          <span>stats + top languages, side by side</span>
         </div>
-        <div class="stat-cards">
+        <p class="lede" style="margin-top:-0.4rem">
+          The card pairing from the widget doc's own alignment tip — <code>display:flex</code>
+          instead of the <code>align="center"</code> attribute it suggests, since that's
+          deprecated HTML.
+        </p>
+        <div class="stat-row">
+          <a href="https://github.com/jubilancy">
+            <img
+              class="theme-card"
+              alt="GitHub stats for jubilancy"
+              height="200"
+              src="https://github-stats-extended.vercel.app/api?username=jubilancy&theme=transparent&hide_border=true"
+            />
+          </a>
           <a href="https://github.com/jubilancy?tab=repositories">
             <img
-              id="langCard"
-              alt="Most used languages across jubilancy's repositories"
-              src="https://github-stats-extended.vercel.app/api/top-langs?username=jubilancy&layout=compact&langs_count=8&card_width=440&theme=transparent&hide_border=true"
+              class="theme-card"
+              alt="Top languages for jubilancy, compact layout"
+              height="200"
+              src="https://github-stats-extended.vercel.app/api/top-langs?username=jubilancy&layout=compact&langs_count=8&card_width=320&theme=transparent&hide_border=true"
             />
           </a>
         </div>
@@ -65,15 +79,90 @@
 
       <section>
         <div class="section-heading">
-          <span>pinned</span>
+          <span>languages</span>
+        </div>
+        <p class="lede" style="margin-top:-0.4rem">Compact layout, then the default donut.</p>
+        <div class="stat-cards">
+          <a href="https://github.com/jubilancy?tab=repositories">
+            <img
+              class="theme-card"
+              alt="Most used languages across jubilancy's repositories, compact layout"
+              src="https://github-stats-extended.vercel.app/api/top-langs?username=jubilancy&layout=compact&langs_count=8&card_width=440&theme=transparent&hide_border=true"
+            />
+          </a>
+          <a href="https://github.com/jubilancy?tab=repositories">
+            <img
+              class="theme-card"
+              alt="Most used languages across jubilancy's repositories, default layout"
+              src="https://github-stats-extended.vercel.app/api/top-langs/?username=jubilancy&langs_count=8&theme=transparent&hide_border=true"
+            />
+          </a>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-heading">
+          <span>pinned repos</span>
           <a href="/projects/">all repos</a>
         </div>
-        <div class="stat-cards">
+        <div class="stat-row">
           <a href="https://github.com/jubilancy/tools">
             <img
-              class="pin-card"
+              class="theme-card pin-card"
               alt="Repository card for jubilancy/tools"
               src="https://github-stats-extended.vercel.app/api/pin/?username=jubilancy&repo=tools&theme=transparent&hide_border=true"
+            />
+          </a>
+          <a href="https://github.com/jubilancy/type-trident">
+            <img
+              class="theme-card pin-card"
+              alt="Repository card for jubilancy/type-trident"
+              src="https://github-stats-extended.vercel.app/api/pin/?username=jubilancy&repo=type-trident&theme=transparent&hide_border=true"
+            />
+          </a>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-heading">
+          <span>gist</span>
+        </div>
+        <div class="stat-cards">
+          <a href="https://gist.github.com/Yizack/bbfce31e0217a3689c8d961a356cb10d/">
+            <img
+              class="theme-card"
+              alt="Pinned gist card"
+              src="https://github-stats-extended.vercel.app/api/gist?id=bbfce31e0217a3689c8d961a356cb10d&theme=transparent&hide_border=true"
+            />
+          </a>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-heading">
+          <span>reference cards</span>
+        </div>
+        <p class="lede" style="margin-top:-0.4rem">
+          The rest of the examples from the widget doc weren't pointed at your data —
+          <code>anuraghazra/github-readme-stats</code> is the upstream project the widget
+          itself is forked from, and the WakaTime card is the doc's own demo handle
+          (<code>alan</code>, not you). Kept here for reference since you asked for
+          everything in the file; swap or delete once you've got a WakaTime account of
+          your own linked up.
+        </p>
+        <div class="stat-cards">
+          <a href="https://github.com/anuraghazra/github-readme-stats">
+            <img
+              class="theme-card"
+              alt="Example pin card for anuraghazra/github-readme-stats"
+              src="https://github-stats-extended.vercel.app/api/pin?username=jubilancy&repo=anuraghazra/github-readme-stats&theme=transparent&hide_border=true"
+            />
+          </a>
+          <a href="https://wakatime.com/@alan">
+            <img
+              class="theme-card"
+              alt="Example WakaTime stats card for the handle 'alan'"
+              src="https://github-stats-extended.vercel.app/api/wakatime?username=alan&theme=transparent&hide_border=true"
             />
           </a>
         </div>
@@ -87,7 +176,7 @@
   </footer>
 
   <script>
-  // Repoint the cards' text colors when the theme flips.
+  // Repoint every card's text/icon colors when the theme flips.
   (function () {
     var root = document.documentElement;
 
@@ -97,7 +186,7 @@
       var text  = dark ? '8a8a8a' : '6b7280';
       var icon  = dark ? 'eaeaea' : '111111';
 
-      document.querySelectorAll('.stat-cards img').forEach(function (img) {
+      document.querySelectorAll('.theme-card').forEach(function (img) {
         var url = new URL(img.src);
         url.searchParams.set('title_color', title);
         url.searchParams.set('text_color', text);

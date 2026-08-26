@@ -21,6 +21,7 @@
         <a href="/projects/">projects</a>
         <a href="/stats/">stats</a>
         <a href="/notes/">notes</a>
+        <a href="/changelog/">changelog</a>
         <a href="/about/">about</a>
         <a href="/contact/">contact</a>
         <button class="theme-toggle" id="themeToggle" aria-label="Switch between light and dark">◐</button>
@@ -29,7 +30,7 @@
 
     <main>
       <h1 class="page-title">hi, i'm eliana 👋</h1>
-      <a href="https://iili.io/KYtTD21.gif">https://iili.io/KYtTD21.gif</a>
+      <img class="hero-gif" src="https://iili.io/KYtTD21.gif" alt="" loading="lazy" />
       <p class="lede">
         I build small things for the web — feeds, galleries, bookmark tools, gardens of
         half-finished notes. Nothing here asks you to sign up for anything.
@@ -95,7 +96,7 @@
   </div>
 
   <footer>
-    <span>© <span id="year"></span> glosse.me</span>
+    <span>© <span id="year"></span> glosse.me · <a id="lastCommit" href="https://github.com/jubilancy/glosse.me/commits/main">last touched…</a></span>
     <span><a href="https://github.com/jubilancy">github</a> · <a href="https://bsky.app/profile/basedgirl.bsky.social">bluesky</a></span>
   </footer>
 
@@ -143,6 +144,21 @@
     .catch(function () {
       document.getElementById('notePreview').innerHTML =
         '<li class="state">Couldn\'t reach Bluesky. <a href="https://bsky.app/profile/basedgirl.bsky.social">View the feed directly</a>.</li>';
+    });
+
+  // Last-touched stamp, pulled from the repo's most recent commit.
+  fetch('https://api.github.com/repos/jubilancy/glosse.me/commits/main')
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (commit) {
+      var el = document.getElementById('lastCommit');
+      if (!el) return;
+      el.textContent = 'last touched ' + timeAgo(commit.commit.author.date);
+      el.href = commit.html_url;
+      el.title = commit.commit.message.split('\n')[0];
+    })
+    .catch(function () {
+      var el = document.getElementById('lastCommit');
+      if (el) el.textContent = 'view commits';
     });
 
   function escapeHtml(s) {

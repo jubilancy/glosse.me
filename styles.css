@@ -57,7 +57,19 @@ header {
   color: var(--fg);
   letter-spacing: -0.01em;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
 }
+
+.site-mark {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.site-mark svg { display: block; }
 
 nav {
   display: flex;
@@ -122,6 +134,14 @@ h1.page-title {
   text-decoration: underline;
   text-decoration-color: var(--border);
   text-underline-offset: 3px;
+}
+
+.hero-gif {
+  display: block;
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin: 1rem 0 1.5rem;
 }
 
 .lede a:hover,

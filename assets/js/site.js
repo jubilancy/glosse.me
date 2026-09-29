@@ -21,6 +21,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
+
+  var built = document.querySelector('.built-when');
+  if (built) {
+    var ago = timeAgo(built.getAttribute('datetime'));
+    if (ago) { built.title = built.textContent; built.textContent = ago; }
+  }
 });
 
 // Shared helper: "3 days ago" style stamps.

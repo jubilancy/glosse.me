@@ -4,12 +4,15 @@ on:
   push:
     branches: [main]
   pull_request:
+  issues:
+    types: [closed, reopened] # republish /ask/ when a question is answered
   workflow_dispatch:
   schedule:
     - cron: "0 12 * * *" # daily rebuild keeps generated pages fresh
 
 permissions:
   contents: read
+  issues: read
   pages: write
   id-token: write
 
@@ -27,6 +30,12 @@ jobs:
         with:
           ruby-version: "3.3"
           bundler-cache: true
+
+      - name: Fetch answered questions
+        run: bash .github/scripts/fetch-ama.sh || echo '[]' > _data/ama.json
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
 
       - name: Build with Jekyll
         run: bundle exec jekyll build

@@ -1,0 +1,9 @@
+<div class="gallery">
+  {%- for i in include.items %}
+  <a class="gallery-item" href="{{ i.url }}">
+    {%- if i.image %}<img src="{{ i.image }}" alt="" loading="lazy" />{% endif %}
+    <span class="name">{{ i.name }}</span>
+    {%- if i.desc %}<span class="desc">{{ i.desc }}</span>{% endif %}
+  </a>
+  {%- endfor %}
+</div>

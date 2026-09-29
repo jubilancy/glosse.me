@@ -1,0 +1,14 @@
+{%- for i in include.items %}
+{%- assign col = forloop.index0 | modulo: 2 %}
+{%- if col == 0 %}<div class="shelf-row">{% endif %}
+  <div class="pot">
+    <iframe src="{{ i.embed | default: i.url }}" title="{{ i.name }}" scrolling="no" loading="lazy"
+      sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox" referrerpolicy="no-referrer"></iframe>
+  </div>
+{%- if col == 1 or forloop.last %}</div>{% endif %}
+{%- endfor %}
+
+<section>
+  <div class="section-heading"><span>every pot</span></div>
+  {% include list.html items=include.items %}
+</section>

@@ -29,8 +29,8 @@ never edit them per page. Page-specific JS goes in `assets/js/` and is loaded wi
 
 1. Repo **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 2. **Custom domain**: `glosse.me` (the `CNAME` file is already in the repo). Tick *Enforce HTTPS* once the cert is issued.
-3. Cloudflare DNS for the apex: four `A` records to `185.199.108.153`, `.109.153`, `.110.153`, `.111.153` (set to *DNS only*, not proxied). Remove the old Cloudflare Pages custom domain first.
-4. Leave the `feed.` / `tools.` / `gallery.` / `obscura.` subdomain records alone.
+
+DNS needs no changes: `glosse.me` and `www` are already CNAMEs to `jubilancy.github.io` in Cloudflare.
 
 ### Local preview
 

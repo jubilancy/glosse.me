@@ -42,3 +42,10 @@ function timeAgo(iso) {
   }
   return 'just now';
 }
+
+// Shared helper: escape untrusted text before it goes into innerHTML.
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}

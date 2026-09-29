@@ -1,0 +1,9 @@
+<header>
+  <a class="site-title" href="/">{{ site.title }}</a>
+  <nav>
+    {%- for item in site.data.navigation %}
+    <a href="{{ item.url }}"{% if page.url == item.url %} aria-current="page"{% endif %}>{{ item.title }}</a>
+    {%- endfor %}
+    <button class="theme-toggle" id="themeToggle" aria-label="Switch between light and dark">◐</button>
+  </nav>
+</header>

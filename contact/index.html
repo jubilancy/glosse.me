@@ -1,107 +1,26 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>contact | glosse.me</title>
-<link rel="icon" type="image/gif" href="https://64.media.tumblr.com/d5ec28e365635b96f197feebc5393d35/89ea4a76136154b1-f3/s250x400/e5ab5e57bc4c5bea4fb5d3f656518f5943662c0b.gif">
-<meta name="description" content="Ways to reach eliana." />
-<meta property="og:title" content="contact | glosse.me" />
-<meta property="og:description" content="Ways to reach eliana." />
-<meta property="og:url" content="https://glosse.me/contact/" />
-<link rel="stylesheet" href="/styles.css" />
-<script src="/site.js"></script>
-</head>
-<body>
-  <div class="wrap">
-    <header>
-      <a class="site-title" href="/">glosse.me</a>
-      <nav>
-        <a href="/projects/">projects</a>
-        <a href="/stats/">stats</a>
-        <a href="/notes/">notes</a>
-        <a href="/changelog/">changelog</a>
-        <a href="/about/">about</a>
-        <a href="/contact/" aria-current="page">contact</a>
-        <button class="theme-toggle" id="themeToggle" aria-label="Switch between light and dark">◐</button>
-      </nav>
-    </header>
-    <main>
-      <h1 class="page-title">contact</h1>
-      <p class="lede">
-        bluesky is the fastest way to reach me. email works too — i read it,
-        i'm just a little slower there.
-      </p>
-      <section>
-        <div class="section-heading">
-          <span>reach me</span>
-        </div>
-        <ul class="contact-list">
-          <li>
-            <span class="label">bluesky</span>
-            <a href="https://bsky.app/profile/basedgirl.bsky.social">@basedgirl.bsky.social</a>
-          </li>
-          <li>
-            <span class="label">github</span>
-            <a href="https://github.com/jubilancy">@jubilancy</a>
-          </li>
-          <li>
-            <span class="label">email</span>
-            <a href="mailto:hi@glosse.me">hi@glosse.me</a>
-          </li>
-        </ul>
-      </section>
-      <section>
-        <div class="section-heading">
-          <span>elsewhere</span>
-        </div>
-        <ul class="contact-list">
-          <li>
-            <span class="label"></span>
-            <a href="https://assets.glosse.me/">assets.glosse.me</a>
-          </li>
-          <li>
-            <span class="label">site</span>
-            <a href="https://glosse.me/">glosse.me</a>
-          </li>
-          <li>
-            <span class="label">stats.fm</span>
-            <a href="https://stats.fm/elianawashere">elianawashere</a>
-          </li>
-          <li>
-            <span class="label">your world of text</span>
-            <a href="https://www.yourworldoftext.com/~girly">~girly</a>
-          </li>
-          <li>
-            <span class="label">figma</span>
-            <a href="https://www.figma.com/@girly">@girly</a>
-          </li>
-          <li>
-            <span class="label">cosmos</span>
-            <a href="https://www.cosmos.so/jubilancy">jubilancy</a>
-          </li>
-          <li>
-            <span class="label">are.na</span>
-            <a href="https://www.are.na/eliana">eliana</a>
-          </li>
-        </ul>
-      </section>
-      <section>
-        <div class="section-heading">
-          <span>some good reasons to write</span>
-        </div>
-        <div class="prose">
-          <p>
-            you found something broken on one of my sites. you made something
-            you think i'd like. you want to trade bookmarks. you're building something small and weird and want a second pair of eyes.
-          </p>
-        </div>
-      </section>
-    </main>
+---
+layout: page
+title: contact
+lede: >-
+  bluesky is the fastest way to reach me. email works too — i read it,
+  i'm just a little slower there.
+---
+<section>
+  <div class="section-heading"><span>reach me</span></div>
+  {% include contact-list.html items=site.data.contact.reach %}
+</section>
+
+<section>
+  <div class="section-heading"><span>elsewhere</span></div>
+  {% include contact-list.html items=site.data.contact.elsewhere %}
+</section>
+
+<section>
+  <div class="section-heading"><span>some good reasons to write</span></div>
+  <div class="prose">
+    <p>
+      you found something broken on one of my sites. you made something
+      you think i'd like. you want to trade bookmarks. you're building something small and weird and want a second pair of eyes.
+    </p>
   </div>
-  <footer>
-    <span>© <span id="year"></span> glosse.me</span>
-    <span><a href="https://github.com/jubilancy">github</a> · <a href="https://bsky.app/profile/basedgirl.bsky.social">bluesky</a></span>
-  </footer>
-</body>
-</html>
+</section>

@@ -1,0 +1,4 @@
+<footer>
+  <span>© <span id="year"></span> {{ site.title }}{% if page.url == "/" %} · <a id="lastCommit" href="https://github.com/{{ site.github_repo }}/commits/main">last touched…</a>{% endif %}</span>
+  <span>{% for s in site.data.social %}<a href="{{ s.url }}">{{ s.title }}</a>{% unless forloop.last %} · {% endunless %}{% endfor %}</span>
+</footer>

@@ -1,10 +1,11 @@
 # Header nav, in order. Add a page here and it shows up everywhere
-# (header, active state, and the `~` terminal).
+# (header, active state, and the `~` terminal). `nav: false` keeps a page
+# out of the header but still in the terminal.
 - { title: projects,   url: /projects/ }
 - { title: stats,      url: /stats/ }
 - { title: notes,      url: /notes/ }
 - { title: changelog,  url: /changelog/ }
-- { title: greenhouse, url: /greenhouse/ }
+- { title: greenhouse, url: /greenhouse/, nav: false }
 - { title: ask,        url: /ask/ }
 - { title: about,      url: /about/ }
 - { title: contact,    url: /contact/ }

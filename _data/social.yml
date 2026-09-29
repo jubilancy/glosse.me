@@ -1,3 +1,4 @@
 # Footer links.
 - { title: github,  url: "https://github.com/jubilancy" }
 - { title: bluesky, url: "https://bsky.app/profile/basedgirl.bsky.social" }
+- { title: greenhouse, url: "/greenhouse/" }

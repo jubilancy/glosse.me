@@ -11,7 +11,7 @@
 <meta property="og:description" content="{{ desc }}" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="{{ page.url | absolute_url }}" />
-<link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}" />
+<link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}?v={{ site.time | date: '%s' }}" />
 <script>window.GLOSSE = { github: {{ site.github_user | jsonify }}, repo: {{ site.github_repo | jsonify }}, bluesky: {{ site.bluesky | jsonify }} };</script>
-<script src="{{ '/assets/js/site.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/site.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 </head>

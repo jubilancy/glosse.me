@@ -1,0 +1,17 @@
+{%- assign full_title = site.title -%}
+{%- if page.title and page.url != "/" -%}{%- assign full_title = page.title | append: " | " | append: site.title -%}{%- endif -%}
+{%- assign desc = page.description | default: site.description -%}
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{{ full_title }}</title>
+<link rel="icon" type="image/gif" href="{{ site.favicon }}">
+<meta name="description" content="{{ desc }}" />
+<meta property="og:title" content="{{ full_title }}" />
+<meta property="og:description" content="{{ desc }}" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="{{ page.url | absolute_url }}" />
+<link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}" />
+<script>window.GLOSSE = { github: {{ site.github_user | jsonify }}, repo: {{ site.github_repo | jsonify }}, bluesky: {{ site.bluesky | jsonify }} };</script>
+<script src="{{ '/assets/js/site.js' | relative_url }}"></script>
+</head>

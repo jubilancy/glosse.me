@@ -1,124 +1,20 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>projects | glosse.me</title>
-<link rel="icon" type="image/gif" href="https://64.media.tumblr.com/d5ec28e365635b96f197feebc5393d35/89ea4a76136154b1-f3/s250x400/e5ab5e57bc4c5bea4fb5d3f656518f5943662c0b.gif"><meta name="description" content="Live listing of eliana's public GitHub repositories." />
-<meta property="og:title" content="projects | glosse.me" />
-<meta property="og:description" content="Live listing of eliana's public GitHub repositories." />
-<meta property="og:url" content="https://glosse.me/projects/" />
-<link rel="stylesheet" href="/styles.css" />
-<script src="/site.js"></script>
-</head>
-<body>
-  <div class="wrap">
-    <header>
-      <a class="site-title" href="/">glosse.me</a>
-      <nav>
-        <a href="/projects/" aria-current="page">projects</a>
-        <a href="/stats/">stats</a>
-        <a href="/notes/">notes</a>
-        <a href="/changelog/">changelog</a>
-        <a href="/about/">about</a>
-        <a href="/contact/">contact</a>
-        <button class="theme-toggle" id="themeToggle" aria-label="Switch between light and dark">◐</button>
-      </nav>
-    </header>
+---
+layout: page
+title: projects
+description: Live listing of eliana's public GitHub repositories.
+scripts: [/assets/js/projects.js]
+---
+<p class="lede">
+  Every public repo on <a href="https://github.com/{{ site.github_user }}">github.com/{{ site.github_user }}</a>,
+  pulled fresh each time this page loads and sorted by most recently pushed.
+</p>
 
-    <main>
-      <h1 class="page-title">projects</h1>
-      <p class="lede">
-        Every public repo on <a href="https://github.com/jubilancy">github.com/jubilancy</a>,
-        pulled fresh each time this page loads and sorted by most recently pushed.
-      </p>
-
-      <section>
-        <div class="section-heading">
-          <span id="repoCount">repositories</span>
-          <a href="https://github.com/jubilancy?tab=repositories">on github ↗</a>
-        </div>
-        <ul class="repo-list" id="repoList">
-          <li class="state">Loading repositories…</li>
-        </ul>
-      </section>
-    </main>
+<section>
+  <div class="section-heading">
+    <span id="repoCount">repositories</span>
+    <a href="https://github.com/{{ site.github_user }}?tab=repositories">on github ↗</a>
   </div>
-
-  <footer>
-    <span>© <span id="year"></span> glosse.me</span>
-    <span><a href="https://github.com/jubilancy">github</a> · <a href="https://bsky.app/profile/basedgirl.bsky.social">bluesky</a></span>
-  </footer>
-
-  <script>
-  var USER = 'jubilancy';
-
-  var LANG_COLORS = {
-    JavaScript: '#f1e05a', TypeScript: '#3178c6', HTML: '#e34c26', CSS: '#563d7c',
-    Python: '#3572A5', Astro: '#ff5a03', Svelte: '#ff3e00', Vue: '#41b883',
-    SCSS: '#c6538c', Shell: '#89e051', Ruby: '#701516', Go: '#00ADD8',
-    Rust: '#dea584', Java: '#b07219', 'C#': '#178600', PHP: '#4F5D95',
-    Nunjucks: '#3d8137', Liquid: '#67b8de', Handlebars: '#f7931e'
-  };
-
-  function escapeHtml(s) {
-    return String(s).replace(/[&<>"']/g, function (c) {
-      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-    });
-  }
-
-  function renderRepo(repo) {
-    var meta = [];
-
-    if (repo.language) {
-      var color = LANG_COLORS[repo.language] || 'var(--muted)';
-      meta.push('<span><span class="dot" style="background:' + color + '"></span>' +
-                escapeHtml(repo.language) + '</span>');
-    }
-    if (repo.stargazers_count) meta.push('<span>★ ' + repo.stargazers_count + '</span>');
-    if (repo.forks_count) meta.push('<span>⑂ ' + repo.forks_count + '</span>');
-    if (repo.homepage) {
-      meta.push('<span><a href="' + escapeHtml(repo.homepage) + '" style="color:inherit">live ↗</a></span>');
-    }
-    if (repo.fork) meta.push('<span>fork</span>');
-    if (repo.archived) meta.push('<span>archived</span>');
-
-    return '<li class="repo">' +
-      '<div class="repo-head">' +
-        '<a class="repo-name" href="' + repo.html_url + '">' + escapeHtml(repo.name) + '</a>' +
-        '<span class="repo-updated">' + timeAgo(repo.pushed_at) + '</span>' +
-      '</div>' +
-      (repo.description ? '<p class="repo-desc">' + escapeHtml(repo.description) + '</p>' : '') +
-      (meta.length ? '<div class="repo-meta">' + meta.join('') + '</div>' : '') +
-    '</li>';
-  }
-
-  fetch('https://api.github.com/users/' + USER + '/repos?sort=pushed&per_page=100&type=owner')
-    .then(function (r) {
-      if (r.status === 403) throw new Error('rate-limited');
-      if (!r.ok) throw new Error(r.status);
-      return r.json();
-    })
-    .then(function (repos) {
-      var list = document.getElementById('repoList');
-      var count = document.getElementById('repoCount');
-
-      if (!repos.length) {
-        list.innerHTML = '<li class="state">No public repositories yet.</li>';
-        return;
-      }
-
-      count.textContent = repos.length + ' repositories';
-      list.innerHTML = repos.map(renderRepo).join('');
-    })
-    .catch(function (err) {
-      var msg = err.message === 'rate-limited'
-        ? 'GitHub is rate-limiting this network right now. Try again in a few minutes, or '
-        : 'Couldn\'t reach GitHub. ';
-      document.getElementById('repoList').innerHTML =
-        '<li class="state">' + msg +
-        '<a href="https://github.com/' + USER + '?tab=repositories">browse the repos on GitHub</a>.</li>';
-    });
-  </script>
-</body>
-</html>
+  <ul class="repo-list" id="repoList">
+    <li class="state">Loading repositories…</li>
+  </ul>
+</section>

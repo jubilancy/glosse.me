@@ -1,0 +1,12 @@
+reach:
+  - { label: bluesky, text: "@basedgirl.bsky.social", url: "https://bsky.app/profile/basedgirl.bsky.social" }
+  - { label: github,  text: "@jubilancy",             url: "https://github.com/jubilancy" }
+  - { label: email,   text: "hi@glosse.me",           url: "mailto:hi@glosse.me" }
+elsewhere:
+  - { label: "",                   text: assets.glosse.me, url: "https://assets.glosse.me/" }
+  - { label: site,                 text: glosse.me,        url: "https://glosse.me/" }
+  - { label: stats.fm,             text: elianawashere,    url: "https://stats.fm/elianawashere" }
+  - { label: your world of text,   text: "~girly",         url: "https://www.yourworldoftext.com/~girly" }
+  - { label: figma,                text: "@girly",         url: "https://www.figma.com/@girly" }
+  - { label: cosmos,               text: jubilancy,        url: "https://www.cosmos.so/jubilancy" }
+  - { label: are.na,               text: eliana,           url: "https://www.are.na/eliana" }

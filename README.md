@@ -1,9 +1,63 @@
 # glosse.me
 
-Personal site. Static HTML, no build step, no dependencies. Astro Nano–inspired:
-monospace type, light/dark toggle, narrow column.
+Personal site, built with Jekyll using a custom theme that lives in this repo.
+Astro Nano–inspired: monospace type, light/dark toggle, narrow column. Live data
+(GitHub, Bluesky) is still fetched client-side, so nothing needs API keys.
+
+## Workflow
+
+Edit content or data, push to `main`, done. GitHub Actions
+(`.github/workflows/deploy.yml`) builds Jekyll and deploys `_site/` to Cloudflare
+Pages; pull requests only build, and a daily cron rebuilds.
+
+| I want to… | Edit |
+|---|---|
+| add/reorder a nav link | `_data/navigation.yml` |
+| add a subdomain | `_data/sites.yml` (home + about update together) |
+| change contact links | `_data/contact.yml` |
+| change footer links | `_data/social.yml` |
+| change GitHub/Bluesky handle, favicon, title | `_config.yml` |
+| change pinned repos / gist | `_data/stats.yml` |
+| change colors | `_sass/glosse.scss` (`:root` and `[data-theme="dark"]`) |
+| write a new page | new `name/index.md` with `layout: page` and a `title` (add it to the nav) |
+
+Footer, header, `<head>`/OG tags, active-nav state and the sitemap are generated —
+never edit them per page. Page-specific JS goes in `assets/js/` and is loaded with
+`scripts: [/assets/js/thing.js]` in front matter.
+
+### One-time setup
+
+Repo **Settings → Secrets and variables → Actions**:
+- secrets `CLOUDFLARE_API_TOKEN` (Pages:Edit) and `CLOUDFLARE_ACCOUNT_ID`
+- optional variable `CLOUDFLARE_PROJECT` (defaults to `glosse-me`)
+
+In Cloudflare, switch the Pages project to *Direct Upload* / disable its own git
+build so it doesn't double-deploy.
+
+### Local preview
+
+```
+bundle install
+bundle exec jekyll serve
+```
+
+## Layout
+
+```
+.
+├── _config.yml
+├── _data/            navigation, sites, contact, social, stats
+├── _layouts/         default, page, prose
+├── _includes/        head, header, footer, contact-list, load-more
+├── _sass/glosse.scss theme tokens + all styles
+├── assets/css/main.scss
+├── assets/js/        site.js (theme toggle, helpers) + per-page scripts
+├── index.html, about/, contact/, projects/, stats/, notes/, changelog/
+└── .github/workflows/deploy.yml
+```
 
 ## Pages
+
 
 | Path | What it does |
 |---|---|
@@ -26,44 +80,3 @@ the page shows a fallback link to GitHub instead of an error.
 **Bluesky** — `public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed`
 Public AppView endpoint, no auth. Replies are filtered out; reposts are labeled.
 Link facets and image embeds render inline. "Load more" pages through the cursor.
-
-## Deploying to Cloudflare Pages
-
-Drag-and-drop, or connect this repo:
-
-1. Cloudflare dashboard → **Workers & Pages** → **Create** → **Pages**
-2. Connect to Git, pick this repo
-3. Build command: *(leave empty)* · Output directory: `/`
-4. Deploy, then **Custom domains** → add `glosse.me`
-
-Since `glosse.me` is already on Cloudflare DNS, the domain attaches without extra
-DNS work.
-
-## Customizing
-
-- **Email** — `/contact/index.html` uses `hi@glosse.me`. Set that up via Cloudflare
-  Email Routing, or swap in a real address.
-- **Subdomain links** — home and about link to `feed.` / `tools.` / `gallery.` /
-  `obscura.glosse.me`. Edit or remove as those move.
-- **Colors** — all six theme values live at the top of `styles.css` in `:root` and
-  `[data-theme="dark"]`. Change them there; the stats cards follow automatically.
-- **Pinned repo** — `/stats/index.html` pins `jubilancy/tools`. Change the `repo=`
-  param to pin something else, or duplicate the block for more.
-- **Usernames** — GitHub handle appears as `USER` in `/projects/`, and Bluesky as
-  `HANDLE` in `/notes/`.
-
-## Files
-
-```
-.
-├── index.html
-├── styles.css        shared styles, all theme tokens
-├── site.js           theme toggle, footer year, timeAgo()
-├── projects/index.html
-├── stats/index.html
-├── notes/index.html
-├── about/index.html
-├── contact/index.html
-├── robots.txt
-└── sitemap.xml
-```

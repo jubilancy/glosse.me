@@ -1,0 +1,5 @@
+# Subdomains. `desc` is the home page blurb, `short` is the about page blurb.
+- { name: feed.glosse.me,    url: "https://feed.glosse.me",    desc: static RSS reader,    short: rss reader }
+- { name: tools.glosse.me,   url: "https://tools.glosse.me",   desc: vanilla JS utilities, short: small utilities }
+- { name: gallery.glosse.me, url: "https://gallery.glosse.me", desc: image gallery,       short: images }
+- { name: obscura.glosse.me, url: "https://obscura.glosse.me", desc: book curation,       short: books }

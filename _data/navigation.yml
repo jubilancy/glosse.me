@@ -1,0 +1,7 @@
+# Header nav, in order. Add a page here and it shows up everywhere.
+- { title: projects,  url: /projects/ }
+- { title: stats,     url: /stats/ }
+- { title: notes,     url: /notes/ }
+- { title: changelog, url: /changelog/ }
+- { title: about,     url: /about/ }
+- { title: contact,   url: /contact/ }

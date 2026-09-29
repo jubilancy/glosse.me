@@ -1,170 +1,50 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>glosse.me</title>
-<link rel="icon" type="image/gif" href="https://64.media.tumblr.com/d5ec28e365635b96f197feebc5393d35/89ea4a76136154b1-f3/s250x400/e5ab5e57bc4c5bea4fb5d3f656518f5943662c0b.gif"><meta name="description" content="glosse.me — eliana's corner of the web." />
-<meta property="og:title" content="glosse.me" />
-<meta property="og:description" content="glosse.me — eliana's corner of the web." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://glosse.me/" />
-<link rel="stylesheet" href="/styles.css" />
-<script src="/site.js"></script>
-</head>
-<body>
-  <div class="wrap">
-    <header>
-      <a class="site-title" href="/">glosse.me</a>
-      <nav>
-        <a href="/projects/">projects</a>
-        <a href="/stats/">stats</a>
-        <a href="/notes/">notes</a>
-        <a href="/changelog/">changelog</a>
-        <a href="/about/">about</a>
-        <a href="/contact/">contact</a>
-        <button class="theme-toggle" id="themeToggle" aria-label="Switch between light and dark">◐</button>
-      </nav>
-    </header>
+---
+layout: default
+title: glosse.me
+scripts: [/assets/js/home.js]
+---
+<h1 class="page-title">hi, i'm eliana 👋</h1>
+<img class="hero-gif" src="https://iili.io/KYtTD21.gif" alt="" loading="lazy" />
+<p class="lede">
+  I build small things for the web — feeds, galleries, bookmark tools, gardens of
+  half-finished notes. Nothing here asks you to sign up for anything.
+</p>
+<p class="lede">
+  This is home base. Everything else lives one link away: what I'm
+  <a href="/projects/">building</a>, what I'm <a href="/notes/">thinking about</a>,
+  and <a href="/about/">who's typing</a>.
+</p>
 
-    <main>
-      <h1 class="page-title">hi, i'm eliana 👋</h1>
-      <img class="hero-gif" src="https://iili.io/KYtTD21.gif" alt="" loading="lazy" />
-      <p class="lede">
-        I build small things for the web — feeds, galleries, bookmark tools, gardens of
-        half-finished notes. Nothing here asks you to sign up for anything.
-      </p>
-      <p class="lede">
-        This is home base. Everything else lives one link away: what I'm
-        <a href="/projects/">building</a>, what I'm <a href="/notes/">thinking about</a>,
-        and <a href="/about/">who's typing</a>.
-      </p>
+<section>
+  <div class="section-heading"><span>sites</span></div>
+  <ul class="link-list">
+    {%- for s in site.data.sites %}
+    <li>
+      <a href="{{ s.url }}">
+        <span class="name">{{ s.name }}</span>
+        <span class="desc">{{ s.desc }}</span>
+      </a>
+    </li>
+    {%- endfor %}
+  </ul>
+</section>
 
-      <section>
-        <div class="section-heading">
-          <span>sites</span>
-        </div>
-        <ul class="link-list">
-          <li>
-            <a href="https://feed.glosse.me">
-              <span class="name">feed.glosse.me</span>
-              <span class="desc">static RSS reader</span>
-            </a>
-          </li>
-          <li>
-            <a href="https://tools.glosse.me">
-              <span class="name">tools.glosse.me</span>
-              <span class="desc">vanilla JS utilities</span>
-            </a>
-          </li>
-          <li>
-            <a href="https://gallery.glosse.me">
-              <span class="name">gallery.glosse.me</span>
-              <span class="desc">image gallery</span>
-            </a>
-          </li>
-          <li>
-            <a href="https://obscura.glosse.me">
-              <span class="name">obscura.glosse.me</span>
-              <span class="desc">book curation</span>
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <div class="section-heading">
-          <span>recent repos</span>
-          <a href="/projects/">see all</a>
-        </div>
-        <ul class="repo-list" id="repoPreview">
-          <li class="state">Loading repos…</li>
-        </ul>
-      </section>
-
-      <section>
-        <div class="section-heading">
-          <span>latest notes</span>
-          <a href="/notes/">see all</a>
-        </div>
-        <ul class="note-list" id="notePreview">
-          <li class="state">Loading notes…</li>
-        </ul>
-      </section>
-    </main>
+<section>
+  <div class="section-heading">
+    <span>recent repos</span>
+    <a href="/projects/">see all</a>
   </div>
+  <ul class="repo-list" id="repoPreview">
+    <li class="state">Loading repos…</li>
+  </ul>
+</section>
 
-  <footer>
-    <span>© <span id="year"></span> glosse.me · <a id="lastCommit" href="https://github.com/jubilancy/glosse.me/commits/main">last touched…</a></span>
-    <span><a href="https://github.com/jubilancy">github</a> · <a href="https://bsky.app/profile/basedgirl.bsky.social">bluesky</a></span>
-  </footer>
-
-  <script>
-  // Three most recently pushed repos.
-  fetch('https://api.github.com/users/jubilancy/repos?sort=pushed&per_page=3')
-    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .then(function (repos) {
-      var el = document.getElementById('repoPreview');
-      if (!repos.length) { el.innerHTML = '<li class="state">No public repos yet.</li>'; return; }
-      el.innerHTML = repos.map(function (repo) {
-        return '<li class="repo">' +
-          '<div class="repo-head">' +
-            '<a class="repo-name" href="' + repo.html_url + '">' + repo.name + '</a>' +
-            '<span class="repo-updated">' + timeAgo(repo.pushed_at) + '</span>' +
-          '</div>' +
-          (repo.description ? '<p class="repo-desc">' + escapeHtml(repo.description) + '</p>' : '') +
-        '</li>';
-      }).join('');
-    })
-    .catch(function () {
-      document.getElementById('repoPreview').innerHTML =
-        '<li class="state">Couldn\'t reach GitHub. <a href="https://github.com/jubilancy">View repos directly</a>.</li>';
-    });
-
-  // Two most recent Bluesky posts.
-  fetch('https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=basedgirl.bsky.social&limit=5&filter=posts_no_replies')
-    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .then(function (data) {
-      var el = document.getElementById('notePreview');
-      var items = (data.feed || []).filter(function (i) { return !i.reason; }).slice(0, 2);
-      if (!items.length) { el.innerHTML = '<li class="state">No notes yet.</li>'; return; }
-      el.innerHTML = items.map(function (item) {
-        var post = item.post;
-        var rkey = post.uri.split('/').pop();
-        return '<li class="note">' +
-          '<p class="note-text">' + escapeHtml(post.record.text || '') + '</p>' +
-          '<div class="note-foot">' +
-            '<span>' + timeAgo(post.record.createdAt) + '</span>' +
-            '<a href="https://bsky.app/profile/basedgirl.bsky.social/post/' + rkey + '">on bluesky ↗</a>' +
-          '</div>' +
-        '</li>';
-      }).join('');
-    })
-    .catch(function () {
-      document.getElementById('notePreview').innerHTML =
-        '<li class="state">Couldn\'t reach Bluesky. <a href="https://bsky.app/profile/basedgirl.bsky.social">View the feed directly</a>.</li>';
-    });
-
-  // Last-touched stamp, pulled from the repo's most recent commit.
-  fetch('https://api.github.com/repos/jubilancy/glosse.me/commits/main')
-    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .then(function (commit) {
-      var el = document.getElementById('lastCommit');
-      if (!el) return;
-      el.textContent = 'last touched ' + timeAgo(commit.commit.author.date);
-      el.href = commit.html_url;
-      el.title = commit.commit.message.split('\n')[0];
-    })
-    .catch(function () {
-      var el = document.getElementById('lastCommit');
-      if (el) el.textContent = 'view commits';
-    });
-
-  function escapeHtml(s) {
-    return String(s).replace(/[&<>"']/g, function (c) {
-      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-    });
-  }
-  </script>
-</body>
-</html>
+<section>
+  <div class="section-heading">
+    <span>latest notes</span>
+    <a href="/notes/">see all</a>
+  </div>
+  <ul class="note-list" id="notePreview">
+    <li class="state">Loading notes…</li>
+  </ul>
+</section>

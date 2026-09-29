@@ -1,0 +1,8 @@
+<ul class="contact-list">
+  {%- for i in include.items %}
+  <li>
+    <span class="label">{{ i.label }}</span>
+    <a href="{{ i.url }}">{{ i.text }}</a>
+  </li>
+  {%- endfor %}
+</ul>

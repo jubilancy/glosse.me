@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="{{ site.lang }}">
+{% include head.html %}
+<body>
+  <div class="wrap">
+    {% include header.html %}
+    <main>
+      {{ content }}
+    </main>
+  </div>
+  {% include footer.html %}
+  {% for src in page.scripts %}<script src="{{ src | relative_url }}"></script>
+  {% endfor %}{% if page.inline_script %}<script>
+{{ page.inline_script }}
+  </script>{% endif %}
+</body>
+</html>

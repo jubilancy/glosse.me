@@ -7,7 +7,7 @@ Astro Nano–inspired: monospace type, light/dark toggle, narrow column. Live da
 ## Workflow
 
 Edit content or data, push to `main`, done. GitHub Actions
-(`.github/workflows/deploy.yml`) builds Jekyll and deploys `_site/` to Cloudflare
+(`.github/workflows/deploy.yml`) builds Jekyll and deploys `_site/` to GitHub
 Pages; pull requests only build, and a daily cron rebuilds.
 
 | I want to… | Edit |
@@ -27,12 +27,10 @@ never edit them per page. Page-specific JS goes in `assets/js/` and is loaded wi
 
 ### One-time setup
 
-Repo **Settings → Secrets and variables → Actions**:
-- secrets `CLOUDFLARE_API_TOKEN` (Pages:Edit) and `CLOUDFLARE_ACCOUNT_ID`
-- optional variable `CLOUDFLARE_PROJECT` (defaults to `glosse-me`)
-
-In Cloudflare, switch the Pages project to *Direct Upload* / disable its own git
-build so it doesn't double-deploy.
+1. Repo **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+2. **Custom domain**: `glosse.me` (the `CNAME` file is already in the repo). Tick *Enforce HTTPS* once the cert is issued.
+3. Cloudflare DNS for the apex: four `A` records to `185.199.108.153`, `.109.153`, `.110.153`, `.111.153` (set to *DNS only*, not proxied). Remove the old Cloudflare Pages custom domain first.
+4. Leave the `feed.` / `tools.` / `gallery.` / `obscura.` subdomain records alone.
 
 ### Local preview
 

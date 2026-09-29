@@ -1,0 +1,17 @@
+---
+layout: page
+---
+{%- comment -%}
+  Front matter only, no HTML:
+    data:    name of a file in _data/ (needs an `items:` list, or be a list)
+    display: shelf | gallery | list   (default: list)
+  Each item: name, url, and optionally desc, image, embed.
+{%- endcomment -%}
+{%- assign set = site.data[page.data] -%}
+{%- assign items = set.items | default: set -%}
+{{ content }}
+{%- case page.display %}
+{%- when "shelf" %}{% include shelf.html items=items %}
+{%- when "gallery" %}{% include gallery.html items=items %}
+{%- else %}{% include list.html items=items %}
+{%- endcase %}

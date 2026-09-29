@@ -25,6 +25,13 @@ Footer, header, `<head>`/OG tags, active-nav state and the sitemap are generated
 never edit them per page. Page-specific JS goes in `assets/js/` and is loaded with
 `scripts: [/assets/js/thing.js]` in front matter.
 
+### Fun stuff
+
+- **`~` terminal** — press `~` (or click the `~` in the footer) on any page. `ls`, `cd projects`, `ls notes` (live from Bluesky), `theme dark`, `help`. It reads the nav and sites from `_data`, so new pages appear automatically. Code: `assets/js/terminal.js`.
+- **Build stamp** — footer line ("9 pages · 94 KB · built 3 hours ago"), filled in by `_plugins/build_stamp.rb`.
+- **/ask/** — the form opens a pre-filled GitHub issue (label `ask`, template `.github/ISSUE_TEMPLATE/ask.md`). Answer it with a comment and **close** the issue: the workflow re-runs, `.github/scripts/fetch-ama.sh` writes `_data/ama.json` (only closed issues with a comment from you), and the Q&A appears. Close as *not planned* to decline a question. Nothing is published until you answer.
+- **Data-only pages** — a page with only front matter: `layout: collection`, `data: <file in _data>`, `display: shelf | gallery | list`. `/greenhouse/` is `_data/greenhouse.yml` rendered as shelves; add a pot by adding a line. `/webgarden.html` is this site's own 250×250 pot for other people's greenhouses.
+
 ### One-time setup
 
 1. Repo **Settings → Pages → Build and deployment → Source: GitHub Actions**.
@@ -46,7 +53,8 @@ bundle exec jekyll serve
 ├── _config.yml
 ├── _data/            navigation, sites, contact, social, stats
 ├── _layouts/         default, page, prose
-├── _includes/        head, header, footer, contact-list, load-more
+├── _includes/        head, header, footer, contact-list, load-more, list, gallery, shelf
+├── _plugins/         build_stamp.rb
 ├── _sass/glosse.scss theme tokens + all styles
 ├── assets/css/main.scss
 ├── assets/js/        site.js (theme toggle, helpers) + per-page scripts

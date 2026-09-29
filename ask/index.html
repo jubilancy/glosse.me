@@ -1,0 +1,49 @@
+---
+layout: page
+title: ask
+description: Ask eliana anything. Answered questions are published here.
+lede: >-
+  Ask me anything. Questions land as GitHub issues; when I answer and close
+  one, it shows up below. Nothing gets published until I've answered it.
+scripts: [/assets/js/ask.js]
+---
+<section>
+  <div class="section-heading"><span>your question</span></div>
+  <form class="ask-form" id="askForm" data-repo="{{ site.github_repo }}">
+    <label for="askText" class="sr-only">Your question</label>
+    <textarea id="askText" rows="4" maxlength="1000" placeholder="what's on your mind?" required></textarea>
+    <div class="ask-foot">
+      <span class="ask-hint" id="askCount">0 / 1000</span>
+      <button type="submit" class="btn">send on github ↗</button>
+    </div>
+    <p class="ask-note">
+      This opens a pre-filled GitHub issue on
+      <a href="https://github.com/{{ site.github_repo }}/issues">{{ site.github_repo }}</a>,
+      so you need a GitHub account, and your username is visible to me there
+      (never on this page). You can review the text before submitting.
+    </p>
+  </form>
+</section>
+
+<section>
+  <div class="section-heading">
+    <span>{{ site.data.ama.size }} answered</span>
+    <a href="https://github.com/{{ site.github_repo }}/issues?q=label%3Aask">on github ↗</a>
+  </div>
+  {%- if site.data.ama.size == 0 %}
+  <p class="state">Nothing answered yet. First one's yours.</p>
+  {%- else %}
+  <ul class="qa-list">
+    {%- for q in site.data.ama %}
+    <li class="qa" id="q{{ q.number }}">
+      <p class="qa-q">{{ q.question | escape | newline_to_br }}</p>
+      <div class="qa-a">{{ q.answer | markdownify }}</div>
+      <div class="qa-foot">
+        <time datetime="{{ q.closed_at }}">{{ q.closed_at | date: "%b %-d, %Y" }}</time>
+        <a href="#q{{ q.number }}">#{{ q.number }}</a>
+      </div>
+    </li>
+    {%- endfor %}
+  </ul>
+  {%- endif %}
+</section>

@@ -1,0 +1,236 @@
+/* Greenhouse shelves, gallery, ask/Q&A, terminal, build stamp. Uses the tokens from glosse.scss. */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- generic button ---------- */
+
+.btn {
+  background: var(--fg);
+  color: var(--bg);
+  border: 1px solid var(--fg);
+  border-radius: 6px;
+  padding: 0.5rem 0.9rem;
+  font-family: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.btn:hover { opacity: 0.85; }
+
+/* ---------- shelf (greenhouse) ---------- */
+
+.shelf-row {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-bottom: 2.75rem;
+}
+
+.shelf-row::after {
+  content: "";
+  position: absolute;
+  left: -0.75rem;
+  right: -0.75rem;
+  bottom: -12px;
+  height: 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--muted);
+  border-radius: 0 0 4px 4px;
+}
+
+.pot {
+  width: 250px;
+  height: 250px;
+  border: 2px solid var(--muted);
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.pot iframe {
+  display: block;
+  width: 250px;
+  height: 250px;
+  border: 0;
+}
+
+/* ---------- gallery ---------- */
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.75rem;
+}
+
+.gallery-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--fg);
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.gallery-item:hover { border-color: var(--muted); }
+.gallery-item img { width: 100%; border-radius: 6px; display: block; }
+.gallery-item .desc { color: var(--muted); font-size: 0.75rem; }
+
+/* ---------- ask + Q&A ---------- */
+
+.ask-form textarea {
+  width: 100%;
+  resize: vertical;
+  background: var(--card);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  font-family: inherit;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.ask-form textarea:focus { border-color: var(--muted); }
+
+.ask-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.6rem;
+}
+
+.ask-hint { font-size: 0.72rem; color: var(--muted); }
+
+.ask-note {
+  font-size: 0.75rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0.75rem 0 0;
+}
+
+.ask-note a { color: var(--fg); }
+
+.qa-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.qa {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+  background: var(--card);
+}
+
+.qa-q { font-weight: 600; font-size: 0.9rem; line-height: 1.6; margin: 0 0 0.6rem; }
+.qa-a { font-size: 0.86rem; line-height: 1.7; color: var(--muted); }
+.qa-a p { margin: 0 0 0.6rem; }
+.qa-a p:last-child { margin: 0; }
+.qa-a a { color: var(--fg); }
+
+.qa-foot {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.7rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.qa-foot a { color: var(--muted); text-decoration: none; }
+.qa-foot a:hover { color: var(--fg); }
+
+/* ---------- build stamp ---------- */
+
+footer { flex-wrap: wrap; }
+
+.build-stamp {
+  flex-basis: 100%;
+  font-size: 0.72rem;
+}
+
+.term-open {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.72rem;
+  padding: 0 0.4rem;
+  cursor: pointer;
+}
+
+.term-open:hover { color: var(--fg); border-color: var(--muted); }
+
+/* ---------- terminal ---------- */
+
+.term {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  background: var(--card);
+  border-top: 1px solid var(--muted);
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.15);
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  color: var(--fg);
+}
+
+.term[hidden] { display: none; }
+
+.term-out {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0.9rem 1.5rem 0.4rem;
+  max-height: 40vh;
+  overflow-y: auto;
+}
+
+.term-line { line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
+.term-line a { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; }
+.term-echo { color: var(--muted); }
+
+.term-form {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0.2rem 1.5rem 0.9rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+}
+
+.term-prompt { color: var(--muted); white-space: nowrap; }
+
+.term-form input {
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: 0;
+  outline: 0;
+  color: var(--fg);
+  font: inherit;
+}
+
+@media (max-width: 560px) {
+  .term-prompt { display: none; }
+}

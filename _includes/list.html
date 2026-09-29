@@ -1,0 +1,10 @@
+<ul class="link-list">
+  {%- for i in include.items %}
+  <li>
+    <a href="{{ i.url }}">
+      <span class="name">{{ i.name }}</span>
+      <span class="desc">{{ i.desc }}</span>
+    </a>
+  </li>
+  {%- endfor %}
+</ul>

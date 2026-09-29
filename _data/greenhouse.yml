@@ -1,0 +1,12 @@
+# Data-only page: /greenhouse/ renders this as shelves of 250x250 "pots".
+# To add a pot, append a line. `embed` is the friend's /webgarden.html;
+# leave it out to frame the site's home page instead.
+items:
+  - { name: glosse.me,       url: "https://glosse.me/",                    embed: "https://glosse.me/webgarden.html" }
+  - { name: micahrl.com,     url: "https://me.micahrl.com/",               embed: "https://me.micahrl.com/webgarden.html" }
+  - { name: melonking.net,   url: "https://melonking.net/",                embed: "https://melonking.net/webgarden.html" }
+  - { name: justbecaws,      url: "https://justbecaws.neocities.org/",     embed: "https://justbecaws.neocities.org/webgarden.html" }
+  - { name: ribo.zone,       url: "https://ribo.zone/" }
+  - { name: leviathren,      url: "https://leviathren.neocities.org/" }
+  - { name: xandra.cc,       url: "https://xandra.cc/" }
+  - { name: cinni,           url: "https://cinni.neocities.org/",         embed: "https://cinni.neocities.org/webgarden.html" }

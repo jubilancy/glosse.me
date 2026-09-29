@@ -1,4 +1,5 @@
 <footer>
   <span>© <span id="year"></span> {{ site.title }}{% if page.url == "/" %} · <a id="lastCommit" href="https://github.com/{{ site.github_repo }}/commits/main">last touched…</a>{% endif %}</span>
   <span>{% for s in site.data.social %}<a href="{{ s.url }}">{{ s.title }}</a>{% unless forloop.last %} · {% endunless %}{% endfor %}</span>
+  <span class="build-stamp">__BUILD_PAGES__ pages · __BUILD_KB__ KB · built <time class="built-when" datetime="{{ site.time | date_to_xmlschema }}">{{ site.time | date: "%b %-d, %Y" }}</time> · <button type="button" class="term-open" id="termOpen" aria-label="Open terminal (~)" title="terminal (press ~)">~</button></span>
 </footer>

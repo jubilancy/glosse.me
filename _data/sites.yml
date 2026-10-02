@@ -5,3 +5,19 @@
 - { name: obscura.glosse.me, url: "https://obscura.glosse.me", desc: book curation,       short: books }
 - { name: jubilancy.github.io/garden/, url: "https://jubilancy.github.io/garden", desc: A monospace digital garden template for Jekyll,       short: template }
 - { name: commons.glosse.me, url: "https://commons.glosse.me", desc: Static Astro Gallery Site for NGA Open Access Works,       short: art-gallery }
+- { name: stacks.glosse.me, url: "https://stacks.glosse.me", desc: A personal library, like Calibre but on the web., short: library }
+- { name: assets.glosse.me, url: "https://glosse.me/projects/assets.glosse.me", desc: picture viewer & gallery, short: pictures }
+- { name: jubilancy.github.io/foto/, url: "https://jubilancy.github.io/foto/", desc: A static VSCO-style photo gallery built from plain text files, short: photos }
+- { name: jubilancy.github.io/nook/, url: "https://jubilancy.github.io/nook/", desc: small projects in a small space, short: small projects }
+- { name: jubilancy.github.io/img/, url: "https://jubilancy.github.io/img/", desc: images i like :) masonry gallery driven by a CSV file, short: image gallery }
+- { name: jubilancy.github.io/gif/, url: "https://jubilancy.github.io/gif/", desc: A dependency-free static site that sources artwork from a CSV file, short: art }
+- { name: jubilancy.github.io/awesome, url: "https://jubilancy.github.io/awesome", desc: my own awesome list, short: awesome list }
+- { name: jubilancy.github.io/viz/, url: "https://jubilancy.github.io/viz/", desc: Taxonomy Visualization, short: taxonomy }
+- { name: jubilancy.github.io/scripts/, url: "https://jubilancy.github.io/scripts/", desc: Auto-indexed script repository, short: scripts }
+- { name: jubilancy.github.io/quotes, url: "https://jubilancy.github.io/quotes", desc: Literary Quotations Collection, short: quotes }
+- { name: jubilancy.github.io/start/, url: "https://jubilancy.github.io/start/", desc: A lightweight start page with live weather, RSS feeds, calendar, and quick links, short: start page }
+- { name: jubilancy.github.io/bkmrkr/, url: "https://jubilancy.github.io/bkmrkr/", desc: Bookmark manager via GitHub Actions, short: bookmarks }
+- { name: jubilancy.github.io/toolkit/, url: "https://jubilancy.github.io/toolkit/", desc: claude webtools practice, short: web tools }
+- { name: jubilancy.github.io/dictionary/, url: "https://jubilancy.github.io/dictionary/", desc: universal data viewer, short: data viewer }
+- { name: jubilancy.github.io/website/, url: "https://jubilancy.github.io/website/", desc: astro nano configured to my taste, short: website }
+- { name: armory.streamlit.app, url: "https://armory.streamlit.app/", desc: building a collection of specific developer tools, short: dev tools }

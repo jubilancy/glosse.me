@@ -3,3 +3,5 @@
 - { name: tools.glosse.me,   url: "https://tools.glosse.me",   desc: vanilla JS utilities, short: small utilities }
 - { name: gallery.glosse.me, url: "https://gallery.glosse.me", desc: image gallery,       short: images }
 - { name: obscura.glosse.me, url: "https://obscura.glosse.me", desc: book curation,       short: books }
+- { name: jubilancy.github.io/garden/, url: "https://jubilancy.github.io/garden", desc: A monospace digital garden template for Jekyll,       short: template }
+- { name: commons.glosse.me, url: "https://commons.glosse.me", desc: Static Astro Gallery Site for NGA Open Access Works,       short: art-gallery }

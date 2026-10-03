@@ -1,0 +1,30 @@
+// Everything the Worker needs lives here, so Workers Builds (git) can deploy it with no login.
+// Secrets (IP_SALT, TURNSTILE_SECRET) are NOT stored here: set them in the dashboard (see README).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Must match the Worker name you pick in the dashboard when connecting the repo.
+  "name": "glosse-guestbook",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-09-01",
+
+  // Static files from public/. Only /api/* is sent to the Worker first.
+  "assets": {
+    "directory": "./public",
+    "run_worker_first": ["/api/*"]
+  },
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "guestbook",
+      // Database ID of the "guestbook" D1 database (an identifier, not a secret).
+      "database_id": "9836c9e9-334b-45cc-b05b-82b0d4fb8060"
+    }
+  ],
+
+  // Public (not secret). Fill in the Turnstile *site key* to turn the widget on; leave "" to skip.
+  // It only has an effect if the TURNSTILE_SECRET secret is also set.
+  "vars": { "TURNSTILE_SITEKEY": "" },
+
+  "observability": { "enabled": true }
+}

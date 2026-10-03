@@ -86,3 +86,85 @@ the page shows a fallback link to GitHub instead of an error.
 **Bluesky** — `public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed`
 Public AppView endpoint, no auth. Replies are filtered out; reposts are labeled.
 Link facets and image embeds render inline. "Load more" pages through the cursor.
+
+---
+
+# Guestbook (Cloudflare Worker)
+
+A tiny guestbook: one Worker ([Hono](https://hono.dev/)), one D1 table, two API routes, static page + embed script.
+It lives beside the Jekyll site but is deployed separately by Cloudflare Workers Builds (the Jekyll build ignores these files).
+
+```
+wrangler.jsonc      config: D1 binding, assets dir, vars
+schema.sql          the one table
+src/index.ts        GET + POST /api/entries
+public/index.html   the guestbook page
+public/embed.js     one-tag embed
+```
+
+## Setup (dashboard, in order)
+
+No `wrangler login` needed anywhere.
+
+1. **Create the D1 database.** [Cloudflare dashboard](https://dash.cloudflare.com/) → *Storage & Databases* → *D1 SQL Database* → *Create*. Name it `guestbook`.
+2. **Copy its Database ID** (shown on the database's page) and paste it over `PASTE-YOUR-D1-DATABASE-ID-HERE` in `wrangler.jsonc`. Commit and push (Codespaces or the GitHub web editor both work).
+3. **Create the table.** D1 → `guestbook` → *Console* tab → paste all of `schema.sql` → *Execute*. (If the console balks at several statements, run them one at a time.)
+4. **Connect the repo.** *Workers & Pages* → *Create* → import from Git → pick `jubilancy/glosse.me` and your production branch (`main`; merge the guestbook branch first). Settings:
+   - **Worker name: `glosse-guestbook`.** It must match `name` in `wrangler.jsonc` or the build fails.
+   - Build command: *(empty)*. Deploy command: `npx wrangler deploy`. Root directory: `/`.
+5. **Set the secret `IP_SALT`.** Worker → *Settings* → *Variables and Secrets* (the runtime one, not the *Build* section) → *Add* → type **Secret**, name `IP_SALT`, value any long random string (a password generator is fine). Without it, posting returns a 500 on purpose. Save and deploy.
+6. **Done.** Open `https://glosse-guestbook.<your-subdomain>.workers.dev`.
+
+### Optional: Turnstile
+
+1. Dashboard → *Turnstile* → *Add widget*. Hostname: the Worker's hostname (`glosse-guestbook.<your-subdomain>.workers.dev`, plus a custom domain if you add one). The widget renders inside the guestbook page, so embeds on other sites need no extra hostnames.
+2. Put the **site key** in `wrangler.jsonc` → `vars.TURNSTILE_SITEKEY`, commit, push.
+3. Add the **secret key** as a Worker secret named `TURNSTILE_SECRET` (same place as `IP_SALT`).
+
+If `TURNSTILE_SECRET` isn't set, verification is skipped entirely.
+
+## Moderating
+
+New entries arrive with `approved = 0`. Use D1 → `guestbook` → *Console*:
+
+```sql
+-- what's waiting?
+SELECT id, name, stamp, message, website, datetime(created_at,'unixepoch') AS at
+FROM entries WHERE approved = 0 ORDER BY id;
+
+-- approve
+UPDATE entries SET approved = 1 WHERE id = 12;
+UPDATE entries SET approved = 1 WHERE id IN (12, 13);
+UPDATE entries SET approved = 1 WHERE approved = 0;     -- everything pending
+
+-- hide again / delete
+UPDATE entries SET approved = 0 WHERE id = 12;
+DELETE FROM entries WHERE id = 12;
+DELETE FROM entries WHERE approved = 0 AND created_at < unixepoch() - 7*86400;  -- stale pending
+
+-- delete everything from one poster
+DELETE FROM entries WHERE ip_hash = (SELECT ip_hash FROM entries WHERE id = 12);
+
+-- optional privacy tidy: the rate limit only needs the last minute of hashes
+UPDATE entries SET ip_hash = '-' WHERE created_at < unixepoch() - 86400;
+```
+
+The public feed is cached for 30 s, so an approval can take that long to show.
+
+## Embedding
+
+On any site (an iframe is injected, so your CSS and mine can't collide; it resizes itself):
+
+```html
+<div id="glosse-guestbook"></div>
+<script src="https://glosse-guestbook.<your-subdomain>.workers.dev/embed.js" async></script>
+```
+
+Script-tag options: `data-target="#other-div"` and `data-theme="light"` or `"dark"` (default follows the visitor's system). If the host page sets a `frame-src` CSP, allow the Worker's origin.
+
+## API
+
+- `GET /api/entries?limit=20&cursor=<id>` → `{ entries: [{id,name,message,website,stamp,color,created_at}], next }`. Approved only, newest first; pass `next` back as `cursor`. The first page also carries `config` (pickers, limits). Text fields are **HTML-escaped**. CORS is open to `eliana.lol`, `glosse.me` and their subdomains (edit `ALLOWED_ORIGIN` in `src/index.ts`).
+- `POST /api/entries` JSON `{name, message, website?, stamp, color, homepage?, turnstile?}` → `201`, `400` (validation / >2 links), `403` (Turnstile), `429` (one per `ip_hash` per minute). `homepage` is the honeypot: leave it empty.
+
+Local dev: `npm install`, then `npx wrangler d1 execute DB --local --file=schema.sql` and `npx wrangler dev --local --var IP_SALT:anything`.

@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>guestbook</title>
+<meta name="description" content="leave a note on the wall">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E📌%3C/text%3E%3C/svg%3E">
+<style>
+/* palette: warm paper by day, inky purple by night. ?theme=light|dark forces one (used by embed). */
+:root{--bg:#efe4cc;--dot:#d6c59c;--text:#2a2433;--muted:#7a6c5d;--accent:#e4572e;--shadow:rgba(60,40,20,.3);--note-ink:#2a2433}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#15111d;--dot:#251e33;--text:#efe6ff;--muted:#9d92b8;--accent:#ff7a59;--shadow:rgba(0,0,0,.55)}}
+:root[data-theme=dark]{--bg:#15111d;--dot:#251e33;--text:#efe6ff;--muted:#9d92b8;--accent:#ff7a59;--shadow:rgba(0,0,0,.55)}
+:root{--mono:"Courier New","Lucida Console",monospace;--hand:"Segoe Print","Bradley Hand","Marker Felt","Comic Sans MS",cursive}
+
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--text);font:15px/1.5 var(--mono);
+  background:radial-gradient(var(--dot) 1.2px,transparent 1.6px) 0 0/20px 20px,var(--bg)}
+.embed body{min-height:0}
+main{max-width:980px;margin:0 auto;padding:16px 16px 48px}
+.embed .hero,.embed footer.foot{display:none}
+
+/* hero: two wonky words */
+.hero{text-align:center;padding:28px 0 8px}
+.hero h1{margin:0;font:700 clamp(2.6rem,10vw,4.8rem)/1 var(--hand);letter-spacing:-.03em}
+.hero h1 span{display:inline-block;text-shadow:3px 3px 0 var(--shadow)}
+.hero h1 span:first-child{transform:rotate(-4deg)}
+.hero h1 span:last-child{transform:rotate(3deg) translateY(6px);color:var(--accent)}
+.hero p{margin:14px auto 0;max-width:34ch;color:var(--muted)}
+
+/* the form is an index card that takes on whatever color you pick */
+form{--pick:#ffdf6b;position:relative;max-width:520px;margin:34px auto 12px;padding:26px 20px 18px;
+  background:var(--pick);color:var(--note-ink);transform:rotate(-.7deg);box-shadow:6px 6px 0 var(--shadow);transition:background .25s}
+form::before{content:"";position:absolute;top:-11px;left:50%;width:90px;height:22px;margin-left:-45px;background:rgba(255,255,255,.55);transform:rotate(2deg)}
+label.f{display:block;margin-bottom:12px;font-size:12px;text-transform:lowercase;letter-spacing:.08em}
+input[type=text],textarea{display:block;width:100%;margin-top:2px;padding:6px 2px;background:transparent;color:inherit;
+  border:0;border-bottom:2px dashed rgba(0,0,0,.35);font:17px var(--hand);outline:0;resize:vertical}
+input[type=text]:focus,textarea:focus{border-bottom-style:solid;border-color:var(--note-ink)}
+textarea{min-height:92px}
+#count{float:right;opacity:.6}
+fieldset{border:0;margin:0 0 12px;padding:0}
+legend{font-size:12px;letter-spacing:.08em;margin-bottom:6px;padding:0}
+.picks{display:flex;flex-wrap:wrap;gap:8px}
+.picks label{cursor:pointer}
+.picks input{position:absolute;opacity:0;pointer-events:none}
+.sw span{display:block;width:28px;height:28px;border-radius:50%;border:2px solid rgba(0,0,0,.45);transition:transform .15s}
+.st span{display:block;width:36px;height:36px;line-height:36px;text-align:center;font-size:20px;border:2px solid transparent;border-radius:6px}
+.picks input:checked+span{transform:scale(1.2) rotate(-6deg);outline:3px solid var(--note-ink);outline-offset:1px}
+.picks input:focus-visible+span{outline:3px dotted var(--note-ink);outline-offset:3px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+button{font:700 15px var(--mono);padding:10px 16px;background:var(--note-ink);color:#fff;border:0;cursor:pointer;
+  box-shadow:3px 3px 0 rgba(0,0,0,.35);transform:rotate(.8deg)}
+button:hover:not(:disabled){transform:rotate(-1deg) translateY(-2px)}
+button:disabled{opacity:.5;cursor:wait}
+#status{min-height:1.5em;margin:12px 0 0;font-size:13px}
+#status.err{color:#a3001f;font-weight:700}
+
+/* the wall of notes */
+.wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:26px 18px;padding:34px 8px 20px;align-items:start}
+.note{position:relative;transform:translate(var(--x),var(--y)) rotate(var(--r));filter:drop-shadow(3px 5px 0 var(--shadow));transition:transform .2s}
+.note:hover{transform:translate(var(--x),calc(var(--y) - 5px)) rotate(0) scale(1.04);z-index:2}
+.note::before{content:"";position:absolute;z-index:1;top:-9px;left:50%;width:64px;height:18px;margin-left:-32px;
+  background:rgba(255,255,255,.5);transform:rotate(calc(var(--r) * -2.5))}
+.paper{position:relative;height:100%;min-height:150px;display:flex;flex-direction:column;gap:10px;padding:26px 18px 14px;
+  background:var(--c);color:var(--note-ink);
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%)} /* dog-eared corner */
+.paper::after{content:"";position:absolute;right:0;bottom:0;width:20px;height:20px;background:linear-gradient(315deg,transparent 50%,rgba(0,0,0,.22) 50%)}
+.stamp{position:absolute;top:6px;right:10px;font-size:30px;line-height:1;transform:rotate(12deg)}
+.msg{margin:0;padding-right:26px;font:17px/1.35 var(--hand);white-space:pre-wrap;overflow-wrap:anywhere}
+.who{margin-top:auto;font-size:12px;display:flex;flex-direction:column;opacity:.85}
+.who a{color:inherit;overflow-wrap:anywhere}
+/* every 4th note is a ticket stub instead */
+.ticket .msg{padding-right:0}
+.ticket .paper{clip-path:none;padding-right:56px;
+  background:linear-gradient(rgba(0,0,0,.35) 50%,transparent 0) calc(100% - 44px) 0/2px 8px repeat-y,var(--c);
+  -webkit-mask:radial-gradient(circle 8px at 0 50%,#0000 97%,#000) left/51% 100% no-repeat,radial-gradient(circle 8px at 100% 50%,#0000 97%,#000) right/51% 100% no-repeat;
+  mask:radial-gradient(circle 8px at 0 50%,#0000 97%,#000) left/51% 100% no-repeat,radial-gradient(circle 8px at 100% 50%,#0000 97%,#000) right/51% 100% no-repeat}
+.ticket .paper::after{display:none}
+.ticket .stamp{top:50%;right:0;width:44px;text-align:center;transform:translateY(-50%) rotate(-8deg)}
+.pending{opacity:.8}
+.pending .paper::before{content:"⏳ awaiting approval";position:absolute;top:6px;left:12px;font-size:10px;letter-spacing:.06em;text-transform:uppercase}
+
+#more{display:block;margin:6px auto 0}
+.empty{text-align:center;color:var(--muted);font:20px var(--hand)}
+footer.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:40px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+  <header class="hero">
+    <h1><span>guest</span> <span>book</span></h1>
+    <p>leave a note on the wall. it gets pinned up once i've peeked at it ✦</p>
+  </header>
+
+  <form id="f" autocomplete="off">
+    <label class="f">your name <input type="text" name="name" maxlength="40" required></label>
+    <label class="f">your website (optional) <input type="text" name="website" maxlength="200" inputmode="url" placeholder="example.com"></label>
+    <label class="f">say something <small id="count">0/500</small>
+      <textarea name="message" maxlength="500" required></textarea></label>
+    <fieldset><legend>paper</legend><div class="picks" id="colors"></div></fieldset>
+    <fieldset><legend>sticker</legend><div class="picks" id="stamps"></div></fieldset>
+    <!-- honeypot: humans never see or fill this; bots do -->
+    <div class="hp" aria-hidden="true"><label>homepage <input type="text" name="homepage" tabindex="-1" autocomplete="off"></label></div>
+    <div id="ts"></div>
+    <button type="submit" id="send">stick it on the wall</button>
+    <p id="status" role="status"></p>
+  </form>
+
+  <section class="wall" id="wall" aria-live="polite"></section>
+  <p class="empty" id="empty" hidden>the wall is bare. be the first ✦</p>
+  <button id="more" hidden>load more</button>
+  <footer class="foot">no tracking · notes are approved by hand</footer>
+</main>
+
+<script>
+(() => {
+  const $ = (s) => document.querySelector(s);
+  const qs = new URLSearchParams(location.search);
+  const embedded = qs.get("embed") && parent !== window;
+  if (qs.get("embed")) document.documentElement.classList.add("embed");
+  if (/^(light|dark)$/.test(qs.get("theme") || "")) document.documentElement.dataset.theme = qs.get("theme");
+
+  const f = $("#f"), wall = $("#wall"), more = $("#more"), empty = $("#empty"), status = $("#status");
+  let cfg = null, next = null, token = "";
+
+  // The API returns HTML-escaped text. We decode it and only ever use textContent, so it can't inject.
+  const unesc = (s) => (s || "").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, "&");
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; };
+  const say = (msg, cls) => { status.textContent = msg; status.className = cls || ""; };
+
+  // One sticky note (or ticket stub). Rotation/offset come from the id, so a note always looks the same.
+  function note(e, pending) {
+    const rnd = (n) => { const x = Math.sin(e.id * 127.1 + n * 311.7) * 43758.5453; return x - Math.floor(x); };
+    const n = el("article", "note" + (e.id % 4 === 0 ? " ticket" : "") + (pending ? " pending" : ""));
+    n.style.setProperty("--c", /^#[0-9a-f]{6}$/i.test(e.color) ? e.color : "#ffdf6b");
+    n.style.setProperty("--r", ((rnd(1) - .5) * 9).toFixed(2) + "deg");
+    n.style.setProperty("--x", ((rnd(2) - .5) * 14).toFixed(1) + "px");
+    n.style.setProperty("--y", (rnd(3) * 26).toFixed(1) + "px");
+    const paper = el("div", "paper");
+    const who = el("footer", "who", "— " + e.name);
+    who.append(el("span", "", new Date(e.created_at * 1000).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })));
+    if (/^https?:\/\//i.test(e.website || "")) {
+      const a = el("a", "", new URL(e.website).hostname.replace(/^www\./, ""));
+      a.href = e.website; a.target = "_blank"; a.rel = "nofollow noopener ugc";
+      who.append(a);
+    }
+    paper.append(el("span", "stamp", e.stamp), el("p", "msg", e.message), who);
+    n.append(paper);
+    return n;
+  }
+
+  async function load() {
+    more.disabled = true;
+    try {
+      const r = await fetch("/api/entries?limit=12" + (next ? "&cursor=" + next : ""));
+      if (!r.ok) throw 0;
+      const d = await r.json();
+      if (!cfg) { cfg = d.config; setup(); }
+      for (const e of d.entries) wall.append(note({ ...e, name: unesc(e.name), message: unesc(e.message), website: unesc(e.website) }));
+      next = d.next;
+      more.hidden = !next;
+      empty.hidden = wall.children.length > 0;
+    } catch {
+      say("couldn't reach the wall. try again?", "err");
+    }
+    more.disabled = false;
+  }
+
+  // Build swatches/stickers from the API's config, with a random starting pick.
+  function setup() {
+    const pick = (a) => a[Math.floor(Math.random() * a.length)];
+    const radios = (box, name, cls, items, start, paint) => items.forEach((v) => {
+      const l = el("label", cls), i = el("input"), s = el("span", "", paint ? "" : v);
+      i.type = "radio"; i.name = name; i.value = v; i.checked = v === start; i.required = true;
+      if (paint) s.style.background = v;
+      l.append(i, s); box.append(l);
+    });
+    radios($("#colors"), "color", "sw", cfg.colors, pick(cfg.colors), true);
+    radios($("#stamps"), "stamp", "st", cfg.stamps, pick(cfg.stamps), false);
+    const paint = () => f.style.setProperty("--pick", f.elements.color.value);
+    f.addEventListener("change", paint); paint();
+    if (cfg.turnstile) { // optional human check, only when the server has Turnstile configured
+      const s = el("script"); s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"; s.onload = () =>
+        turnstile.render("#ts", { sitekey: cfg.turnstile, callback: (t) => (token = t), "expired-callback": () => (token = "") });
+      document.head.append(s);
+    }
+  }
+
+  f.elements.message.addEventListener("input", (e) => ($("#count").textContent = e.target.value.length + "/500"));
+
+  f.addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    if (cfg?.turnstile && !token) return say("one sec, doing the human check…");
+    const body = Object.fromEntries(new FormData(f));
+    $("#send").disabled = true;
+    say("pinning it up…");
+    try {
+      const r = await fetch("/api/entries", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...body, turnstile: token }) });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || "something went wrong");
+      // show their own note straight away, dashed as "pending", until a reload
+      wall.prepend(note({ ...body, id: Date.now(), created_at: Date.now() / 1000 }, true));
+      empty.hidden = true;
+      for (const k of ["name", "message", "website"]) f.elements[k].value = ""; $("#count").textContent = "0/500";
+      say("📮 got it! it'll show up for everyone once it's approved.");
+    } catch (e) {
+      say(e.message, "err");
+    }
+    $("#send").disabled = false;
+    if (window.turnstile) { turnstile.reset(); token = ""; } // tokens are single-use
+  });
+
+  more.addEventListener("click", load);
+  load();
+
+  // when embedded, tell the host page how tall we are
+  if (embedded) {
+    const post = () => parent.postMessage({ type: "glosse-guestbook:height", height: Math.ceil(document.body.getBoundingClientRect().height) }, "*");
+    new ResizeObserver(post).observe(document.body); post();
+  }
+})();
+</script>
+</body>
+</html>

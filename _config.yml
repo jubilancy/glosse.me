@@ -25,3 +25,12 @@ exclude:
   - vendor
   - .github
   - .bundle
+  # guestbook Worker (deployed by Cloudflare, not Jekyll)
+  - src
+  - public
+  - wrangler.jsonc
+  - schema.sql
+  - package.json
+  - package-lock.json
+  - tsconfig.json
+  - node_modules

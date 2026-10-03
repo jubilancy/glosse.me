@@ -17,8 +17,8 @@
     {
       "binding": "DB",
       "database_name": "guestbook",
-      // ⬇ Paste the Database ID from the dashboard (D1 → guestbook → Settings/Overview).
-      "database_id": "PASTE-YOUR-D1-DATABASE-ID-HERE"
+      // Database ID of the "guestbook" D1 database (an identifier, not a secret).
+      "database_id": "9836c9e9-334b-45cc-b05b-82b0d4fb8060"
     }
   ],
 

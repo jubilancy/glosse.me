@@ -1,0 +1,10 @@
+<ul class="link-list entry-list">
+  {%- for e in include.entries %}
+  <li>
+    <a href="{{ e.url }}">
+      <span class="name">{{ e.title }}</span>
+      <span class="desc">{{ e.date | date: "%b %-d, %Y" }}</span>
+    </a>
+  </li>
+  {%- endfor %}
+</ul>

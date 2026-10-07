@@ -1,0 +1,20 @@
+---
+layout: page
+---
+{%- assign words = content | strip_html | number_of_words -%}
+<p class="post-meta">
+  <a href="/{{ page.section }}/">← {{ page.section_title }}</a>
+  · <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%b %-d, %Y" }}</time>
+  {%- if page.updated %} · updated <time datetime="{{ page.updated | date_to_xmlschema }}">{{ page.updated | date: "%b %-d, %Y" }}</time>{% endif %}
+  · {% if words < 200 %}1 min{% else %}{{ words | divided_by: 200 | plus: 1 }} min{% endif %} read
+  {%- for t in page.tags %} · <span class="tag">#{{ t }}</span>{% endfor %}
+</p>
+<div class="prose">
+{{ content }}
+</div>
+{% if page.newer or page.older %}
+<nav class="post-nav" aria-label="more in {{ page.section_title }}">
+  {% if page.older %}<a class="older" href="{{ page.older.url }}">← {{ page.older.title }}</a>{% else %}<span></span>{% endif %}
+  {% if page.newer %}<a class="newer" href="{{ page.newer.url }}">{{ page.newer.title }} →</a>{% endif %}
+</nav>
+{% endif %}

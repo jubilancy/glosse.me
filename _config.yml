@@ -12,6 +12,10 @@ bluesky: basedgirl.bsky.social
 favicon: https://64.media.tumblr.com/d5ec28e365635b96f197feebc5393d35/89ea4a76136154b1-f3/s250x400/e5ab5e57bc4c5bea4fb5d3f656518f5943662c0b.gif
 
 permalink: pretty
+# Folders of markdown become sections automatically (see README, "Adding content").
+auto_nav: true        # new sections appear in the header; false = terminal only
+sections_ignore: []   # top-level folders to never treat as sections
+
 plugins:
   - jekyll-sitemap
 

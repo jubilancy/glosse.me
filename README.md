@@ -32,6 +32,26 @@ never edit them per page. Page-specific JS goes in `assets/js/` and is loaded wi
 - **/ask/** — the form opens a pre-filled GitHub issue (label `ask`, template `.github/ISSUE_TEMPLATE/ask.md`). Answer it with a comment and **close** the issue: the workflow re-runs, `.github/scripts/fetch-ama.sh` writes `_data/ama.json` (only closed issues with a comment from you), and the Q&A appears. Close as *not planned* to decline a question. Nothing is published until you answer.
 - **Data-only pages** — a page with only front matter: `layout: collection`, `data: <file in _data>`, `display: shelf | gallery | list`. `/greenhouse/` is `_data/greenhouse.yml` rendered as shelves; add a pot by adding a line. `/webgarden.html` is this site's own 250×250 pot for other people's greenhouses.
 
+### Adding content
+
+Make a top-level folder, drop markdown files in it, push. That's it.
+
+```
+thoughts/
+  2026-10-07-first-note.md     # date from the filename
+  another.md                   # date from git history
+  index.md                     # optional: intro text for /thoughts/
+  _wip.md                      # leading _ = never published
+```
+
+The build (`_plugins/sections.rb`) generates, per folder: post pages at `/thoughts/<slug>/`, an index at `/thoughts/` (newest first), prev/next links, Atom feeds (`/feed.xml` for everything, `/thoughts/feed.xml` per section), a header link, and a `~` terminal entry (`ls thoughts`, `cd thoughts/first-note`).
+
+- **No front matter needed.** Title = first `# heading` (else the filename), description = first paragraph, date = `YYYY-MM-DD-` filename prefix, else `date:`, else the file's first git commit. Optional front matter: `title`, `description`, `date`, `updated`, `tags: [a, b]`, `draft: true`.
+- **Scheduling:** a post with an explicit future date stays hidden until that day; the daily rebuild publishes it.
+- **Relative images and links work:** `![](pic.png)` and `[other](other-note.md)` are rewritten to the right URLs. Liquid (`{{ }}`) in posts is left alone.
+- **Header/terminal:** new sections join the header automatically. Set `auto_nav: false` in `_config.yml` for terminal-only, or add `_data/sections.yml` (`thoughts: { title: "my thoughts", lede: "…", nav: false }`) to customise one. Add a section to `_data/navigation.yml` yourself to control its position.
+- **Not a section:** folders with only an `index.*` (about, notes, projects…), `README.md` files, and anything in `sections_ignore` (`_config.yml`).
+
 ### One-time setup
 
 1. Repo **Settings → Pages → Build and deployment → Source: GitHub Actions**.

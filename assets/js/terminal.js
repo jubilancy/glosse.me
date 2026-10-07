@@ -1,6 +1,6 @@
 // Press ~ (or `) on any page for a tiny terminal that navigates the real site.
 (function () {
-  var FS = window.GLOSSE_FS || { pages: [], sites: [], contact: [], greenhouse: [] };
+  var FS = window.GLOSSE_FS || { pages: [], sites: [], contact: [], greenhouse: [], sections: {} };
   var G = window.GLOSSE || {};
   var root, out, input, prompt, opener;
   var history = [], hi = 0;
@@ -15,6 +15,10 @@
     return FS.sites.filter(function (s) {
       return s.name === name || s.name.split('.')[0] === name;
     })[0];
+  }
+  function findEntry(path) {
+    var sec = (FS.sections || {})[path.split('/')[0]] || [];
+    return sec.filter(function (e) { return e.url === '/' + path + '/'; })[0];
   }
   function clean(a) { return String(a || '').replace(/^~?\/+|\/+$/g, '').toLowerCase(); }
 
@@ -149,7 +153,9 @@
     if (dir === 'notes') return liveNotes();
     if (dir === 'projects') return liveRepos();
     if (dir === 'changelog') return liveCommits();
-    if (dir === 'contact') {
+    if (FS.sections && FS.sections[dir]) {
+      FS.sections[dir].forEach(function (e) { line(e.date + '  ' + e.title, e.url); });
+    } else if (dir === 'contact') {
       FS.contact.forEach(function (c) { line(c.label + '  ' + c.text, c.url); });
     } else if (dir === 'greenhouse') {
       FS.greenhouse.forEach(function (g) { line(g.name, g.url); });
@@ -167,7 +173,9 @@
     }
     var page = findPage(dir);
     var site = findSite(dir);
+    var entry = findEntry(dir);
     if (page) { location.href = page.url; }
+    else if (entry) { location.href = entry.url; }
     else if (site) { location.href = site.url; }
     else { line('cd: ' + arg + ': no such directory'); }
   }

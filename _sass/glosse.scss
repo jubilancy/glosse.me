@@ -487,3 +487,33 @@ footer a { color: var(--muted); }
   .link-list .desc { display: none; }
   footer { flex-direction: column; gap: 0.35rem; }
 }
+
+/* ---------- sections (folders of markdown) ---------- */
+
+.post-meta {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin: -0.4rem 0 1.4rem;
+}
+.post-meta a { color: var(--muted); }
+.post-meta a:hover { color: var(--fg); }
+
+.post-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+.post-nav a { color: var(--muted); text-decoration: none; }
+.post-nav a:hover { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; }
+.post-nav .newer { margin-left: auto; text-align: right; }
+
+.entry-list .desc { white-space: nowrap; }
+.feed-link { margin-top: 1.5rem; font-size: 0.8rem; }
+.feed-link a { color: var(--muted); }
+
+.prose img { max-width: 100%; height: auto; }
+.prose pre { overflow-x: auto; }

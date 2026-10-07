@@ -3,6 +3,14 @@ tagline: eliana's corner of the web
 description: glosse.me — eliana's corner of the web.
 url: https://glosse.me
 lang: en
+author: eliana
+
+# Used by jekyll-seo-tag for the structured data search engines read.
+social:
+  name: eliana
+  links:
+    - https://github.com/jubilancy
+    - https://bsky.app/profile/basedgirl.bsky.social
 
 # Accounts the live pages read from (exposed to the browser as window.GLOSSE).
 github_user: jubilancy
@@ -18,6 +26,7 @@ sections_ignore: []   # top-level folders to never treat as sections
 
 plugins:
   - jekyll-sitemap
+  - jekyll-seo-tag
 
 sass:
   style: compressed

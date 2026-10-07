@@ -1,0 +1,39 @@
+---
+layout: page
+---
+{%- assign items = site.data.art_items -%}
+{%- if items.size > 0 %}
+<div class="art-grid" id="artGrid">
+  {%- for a in items %}
+  <figure class="art-card">
+    <a href="{{ a.url | escape }}" class="art-open" data-i="{{ forloop.index0 }}"
+       data-title="{{ a.title | escape }}" data-artist="{{ a.artist | escape }}" data-date="{{ a.date | escape }}"
+       data-medium="{{ a.medium | escape }}" data-credit="{{ a.credit | escape }}" data-site="{{ a.site | escape }}"
+       data-note="{{ a.note | escape }}" data-image="{{ a.image | escape }}" rel="noopener">
+      {%- if a.image %}<img src="{{ a.image | escape }}" alt="{{ a.title | escape }}" loading="lazy" referrerpolicy="no-referrer" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'art-noimg',textContent:this.alt}))">{% else %}<span class="art-noimg">{{ a.title | escape }}</span>{% endif %}
+    </a>
+    <figcaption>
+      <span class="art-title">{{ a.title | escape }}</span>
+      <span class="art-by">{% if a.artist %}{{ a.artist | escape }}{% endif %}{% if a.artist and a.date %}, {% endif %}{{ a.date | escape }}</span>
+    </figcaption>
+  </figure>
+  {%- endfor %}
+</div>
+
+<dialog id="artDialog" class="art-dialog" aria-label="artwork">
+  <button type="button" class="art-close" aria-label="close">×</button>
+  <button type="button" class="art-nav art-prev" aria-label="previous">‹</button>
+  <button type="button" class="art-nav art-next" aria-label="next">›</button>
+  <div class="art-stage"><img alt="" referrerpolicy="no-referrer"></div>
+  <div class="art-info">
+    <p class="art-i-title"></p>
+    <p class="art-i-by"></p>
+    <p class="art-i-medium"></p>
+    <p class="art-i-note"></p>
+    <p class="art-i-credit"></p>
+    <a class="art-i-link" rel="noopener" href="#">view at source ↗</a>
+  </div>
+</dialog>
+{%- else %}
+<p class="lede">Nothing here yet. Add links to <code>_data/art.yml</code>.</p>
+{%- endif %}

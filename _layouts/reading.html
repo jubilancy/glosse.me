@@ -1,0 +1,43 @@
+---
+layout: page
+---
+{%- assign sources = site.data.feed_sources -%}
+{%- if sources.size > 0 %}
+<div class="chips" id="sourceChips" role="group" aria-label="filter by feed">
+  <button type="button" class="chip" data-source="" aria-pressed="true">all</button>
+  {%- for s in sources %}{% if s.count > 0 %}
+  <button type="button" class="chip" data-source="{{ s.slug }}" aria-pressed="false">{{ s.name | escape }}</button>
+  {%- endif %}{% endfor %}
+</div>
+
+<ul class="river" id="river">
+  {%- for it in site.data.feed_items %}
+  <li data-source="{{ it.slug }}">
+    <a href="{{ it.url | escape }}" rel="noopener">
+      {%- if it.image %}<img class="thumb" src="{{ it.image | escape }}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">{% endif %}
+      <span class="river-body">
+        <span class="river-meta">{{ it.source | escape }}{% if it.date %} · <time datetime="{{ it.date | date_to_xmlschema }}">{{ it.date | date: "%b %-d, %Y" }}</time>{% endif %}</span>
+        <span class="river-title">{{ it.title | escape }}</span>
+        {%- if it.summary != "" %}<span class="river-desc">{{ it.summary | escape }}</span>{% endif %}
+      </span>
+    </a>
+  </li>
+  {%- endfor %}
+</ul>
+
+<section>
+  <div class="section-heading"><span>the feeds</span> <a href="/reading/feeds.opml">opml</a></div>
+  <ul class="link-list">
+    {%- for s in sources %}
+    <li>
+      <a href="{{ s.site | default: s.feed | escape }}" rel="noopener">
+        <span class="name">{{ s.name | escape }}{% unless s.ok %} <span class="tag">(couldn't load)</span>{% endunless %}</span>
+        <span class="desc">{{ s.note | escape }}</span>
+      </a>
+    </li>
+    {%- endfor %}
+  </ul>
+</section>
+{%- else %}
+<p class="lede">No feeds yet. Add some to <code>_data/feeds.yml</code>.</p>
+{%- endif %}

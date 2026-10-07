@@ -5,6 +5,8 @@
 - { title: stats,      url: /stats/ }
 - { title: notes,      url: /notes/ }
 - { title: changelog,  url: /changelog/ }
+- { title: reading,    url: /reading/, nav: false }
+- { title: art,        url: /art/,     nav: false }
 - { title: greenhouse, url: /greenhouse/, nav: false }
 - { title: ask,        url: /ask/ }
 - { title: about,      url: /about/ }

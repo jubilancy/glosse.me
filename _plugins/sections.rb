@@ -29,8 +29,9 @@ module Glosse
       add_feeds(sections)
 
       site.config["sections_feed"] = true
-      site.data["section_index"] = sections.transform_values do |s|
-        s[:entries].map { |e| { "title" => e[:title], "url" => e[:url], "date" => e[:date].strftime("%Y-%m-%d") } }
+      lists = (site.data["terminal_lists"] ||= {})
+      sections.each do |name, s|
+        lists[name] = s[:entries].map { |e| { "title" => e[:title], "url" => e[:url], "date" => e[:date].strftime("%Y-%m-%d") } }
       end
     end
 

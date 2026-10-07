@@ -1,0 +1,11 @@
+# Links to art, shown at /art/. Paste a link and the build looks up the title,
+# artist, date, medium and image itself. Works best with the Met, Art Institute
+# of Chicago and Wikimedia Commons file pages; other pages use their Open Graph
+# tags, and a direct image URL works too. Add `note:` for your own caption, or
+# `title:`, `artist:`, `date:`, `image:` to override anything.
+# These are starters, swap in the ones you love.
+- https://www.metmuseum.org/art/collection/search/436535
+- https://www.artic.edu/artworks/27992
+- https://www.artic.edu/artworks/28560
+- https://www.metmuseum.org/art/collection/search/45434
+- https://commons.wikimedia.org/wiki/File:Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg

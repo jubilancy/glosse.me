@@ -11,7 +11,8 @@
   {% include footer.html %}
   <script src="{{ '/assets/js/fs.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
   <script src="{{ '/assets/js/terminal.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
-  {% for src in page.scripts %}<script src="{{ src | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+  {% if content contains 'class="embed ' %}<script src="{{ '/assets/js/embeds.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+  {% endif %}{% for src in page.scripts %}<script src="{{ src | relative_url }}?v={{ site.time | date: '%s' }}"></script>
   {% endfor %}{% if page.inline_script %}<script>
 {{ page.inline_script }}
   </script>{% endif %}

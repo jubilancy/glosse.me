@@ -1,0 +1,10 @@
+# Hand-picked feeds shown at /reading/. The build fetches them (no keys, no CORS
+# trouble) and the daily deploy refreshes them. `url` can be the feed itself or
+# just the site: feeds are auto-discovered. `note` is your one-liner on why.
+# These are starters, swap in the ones you love.
+- { name: Julia Evans,    url: https://jvns.ca/atom.xml,              note: "zines and clear explanations of how computers work" }
+- { name: Maggie Appleton, url: https://maggieappleton.com/rss.xml,   note: "digital gardens, design, and beautiful illustrations" }
+- { name: Robin Sloan,    url: https://www.robinsloan.com/feed.xml,   note: "media inventor, writer, olive oil" }
+- { name: kottke.org,     url: https://kottke.org/,                   note: "the best of the old web, still going" }
+- { name: The Marginalian, url: https://www.themarginalian.org/feed/, note: "essays on art, books and being alive" }
+- { name: xkcd,           url: https://xkcd.com/atom.xml,             note: "obviously" }

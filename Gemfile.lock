@@ -161,6 +161,7 @@ PLATFORMS
 DEPENDENCIES
   jekyll (~> 4.3)
   jekyll-sitemap
+  rexml
   webrick (~> 1.8)
 
 CHECKSUMS

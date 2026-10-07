@@ -52,6 +52,15 @@ The build (`_plugins/sections.rb`) generates, per folder: post pages at `/though
 - **Header/terminal:** new sections join the header automatically. Set `auto_nav: false` in `_config.yml` for terminal-only, or add `_data/sections.yml` (`thoughts: { title: "my thoughts", lede: "…", nav: false }`) to customise one. Add a section to `_data/navigation.yml` yourself to control its position.
 - **Not a section:** folders with only an `index.*` (about, notes, projects…), `README.md` files, and anything in `sections_ignore` (`_config.yml`).
 
+### Reading, art and embeds
+
+All three are filled in at **build time** (no keys, no CORS proxy, nothing for visitors to wait on) and refreshed by the daily deploy. A site that is down on build day just shows as a plain link; it never breaks the build. `GLOSSE_OFFLINE=1 bundle exec jekyll serve` skips the network and uses the local cache (`.jekyll-cache/glosse/`, 6h).
+
+- **`/reading/`: feeds you adore.** List them in `_data/feeds.yml` (`name`, `url`, optional `note`). `url` can be the feed or just the site (the feed is auto-discovered). The page shows one newest-first river with filter chips; `/reading/feeds.opml` exports the list.
+- **`/art/`: art viewer.** Paste links into `_data/art.yml`. Title, artist, date, medium, credit and image are looked up from each link: the Met, the Art Institute of Chicago and Wikimedia Commons file pages via their open APIs, anything else via its Open Graph / schema.org tags, or a direct image URL. Add `note:` for a caption, or `title:`/`artist:`/`date:`/`image:` to override. Click a piece to open it large; arrow keys move, `/art/#3` deep-links.
+- **Embeds, in any markdown file.** Put a URL alone on its own line: YouTube (click-to-play, nothing loads until you click), Vimeo, Spotify, SoundCloud, CodePen, Bluesky posts, GitHub repo cards, images, video/audio files; any other URL becomes a link card (title, blurb, image). A URL inside a sentence, or `[text](url)`, stays a normal link.
+- `reading` and `art` are in the `~` terminal (`ls reading`, `ls art`). They're `nav: false` in `_data/navigation.yml`; flip that to put them in the header.
+
 ### One-time setup
 
 1. Repo **Settings → Pages → Build and deployment → Source: GitHub Actions**.

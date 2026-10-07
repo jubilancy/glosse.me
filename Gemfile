@@ -7,3 +7,6 @@ group :jekyll_plugins do
 end
 
 gem "webrick", "~> 1.8"
+
+# build-time plugins (feeds.rb) parse RSS/Atom; rexml is no longer bundled with Ruby 3.4+
+gem "rexml"

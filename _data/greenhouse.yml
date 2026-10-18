@@ -10,3 +10,34 @@ items:
   - { name: leviathren,      url: "https://leviathren.neocities.org/" }
   - { name: xandra.cc,       url: "https://xandra.cc/" }
   - { name: cinni,           url: "https://cinni.neocities.org/",         embed: "https://cinni.neocities.org/webgarden.html" }
+  - { name: flagellantiac.neocities.org/,       url: "https://flagellantiac.neocities.org/" }
+  - { name: jessiechannel.neocities.org/,       url: "https://jessiechannel.neocities.org/" }
+  - { name: tofutush.neocities.org/,       url: "https://tofutush.neocities.org/" }
+  - { name: xandra.cc/,       url: "https://xandra.cc/" }
+  - { name: blamensir.neocities.org/,       url: "https://blamensir.neocities.org/" }
+  - { name: hillhouse.neocities.org/,       url: "https://hillhouse.neocities.org/" }
+  - { name: webring.xxiivv.com/,       url: "https://webring.xxiivv.com/" }
+  - { name: laeastra.com/,       url: "https://laeastra.com/" }
+  - { name: lieu.cblgh.org/random,       url: "https://lieu.cblgh.org/random/" }
+  - { name: visualculture.vc/,       url: "https://visualculture.vc/" }
+  - { name: bondiaries.neocities.org/,       url: "https://bondiaries.neocities.org/" }
+  - { name: myrrh.city/,       url: "https://myrrh.city/" }
+  - { name: solflo.neocities.org/,       url: "https://solflo.neocities.org/" }
+  - { name: 32bit.cafe/,       url: "https://32bit.cafe/" }
+  - { name: 22yk01.neocities.org/,       url: "https://22yk01.neocities.org/" }
+  - { name: saturn.town/,       url: "https://saturn.town/" }
+  - { name: cs.sjoy.lol/,       url: "https://cs.sjoy.lol/" }
+  - { name: webri.ng/webring/cssjoy/,       url: "https://webri.ng/webring/cssjoy/" }
+  - { name: hog.neocities.org/,       url: "https://hog.neocities.org/" }
+  - { name: melonking.net/,       url: "https://melonking.net/" }
+  - { name: sixey.es/,       url: "https://sixey.es/" }
+  - { name: daikonet.neocities.org/,       url: "https://daikonet.neocities.org/" }
+  - { name: livelaugh.blog/,       url: "https://livelaugh.blog/" }
+  - { name: forum.melonland.net/index.php?action=mguild;sa=view;gid=7,       url: "https://forum.melonland.net/index.php?action=mguild;sa=view;gid=7/" }
+  - { name: everyone.melonland.net/~nature,       url: "https://everyone.melonland.net/~nature/" }
+  - { name: wiki.melonland.net/webring,       url: "https://wiki.melonland.net/webring/" }
+  - { name: corruptedunicorn.neocities.org/,       url: "https://corruptedunicorn.neocities.org/" }
+  - { name: adelfaure.net/,       url: "https://www.adelfaure.net/" }
+  - { name: adelfaure.net/tools/jgs/,       url: "https://adelfaure.net/tools/jgs/" }
+  - { name: ribo.zone/blog/neighborhood-1-tunnels,       url: "https://ribo.zone/blog/neighborhood-1-tunnels/" }
+

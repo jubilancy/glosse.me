@@ -163,3 +163,35 @@
 @media (prefers-reduced-motion: reduce) {
   .motes, .glass i, .drops, .can { display: none; }
 }
+
+/* ---------- toybox ---------- */
+
+#toybox {
+  position: relative;
+  height: min(70vh, 520px);
+  min-height: 360px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+}
+
+#toybox > * {
+  padding: 1px;
+  transition: transform 0.2s ease;
+}
+
+#toybox > *:hover {
+  transform: scale(1.8);
+  z-index: 30 !important;
+}
+
+#toybox img { display: block; }
+
+.toybox-credit {
+  margin: 1rem 0 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.toybox-credit a { color: var(--fg); }

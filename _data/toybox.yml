@@ -1,12 +1,32 @@
-# Beasts for /toybox/. Each beast is an image in assets/toybox/ and the page it
-# travels to when clicked (its source). `size` is the display width in px.
-- { name: cat,   img: cat.svg,   size: 84, url: "https://feed.glosse.me" }
-- { name: frog,  img: frog.svg,  size: 80, url: "https://tools.glosse.me" }
-- { name: snail, img: snail.svg, size: 76, url: "https://gallery.glosse.me" }
-- { name: fish,  img: fish.svg,  size: 82, url: "https://obscura.glosse.me" }
-- { name: moth,  img: moth.svg,  size: 78, url: "https://commons.glosse.me" }
-- { name: jelly, img: jelly.svg, size: 88, url: "https://stacks.glosse.me" }
-- { name: bee,   img: bee.svg,   size: 66, url: "https://jubilancy.github.io/foto/" }
-- { name: ghost, img: ghost.svg, size: 84, url: "https://jubilancy.github.io/nook/" }
-- { name: duck,  img: duck.svg,  size: 80, url: "https://jubilancy.github.io/awesome" }
-- { name: crab,  img: crab.svg,  size: 86, url: "https://jubilancy.github.io/quotes" }
+# Beasts for /toybox/. Each beast is a GIF in assets/critters/gif/ and the page
+# it travels to when clicked (its source). `size` is the display width in px.
+- { name: ladybug, img: ladybug.gif, size: 64, url: "https://glosse.me" }
+- { name: bee, img: bee.gif, size: 64, url: "https://glosse.me" }
+- { name: butterfly, img: butterfly.gif, size: 64, url: "https://glosse.me" }
+- { name: snail, img: snail.gif, size: 64, url: "https://glosse.me" }
+- { name: frog, img: frog.gif, size: 64, url: "https://glosse.me" }
+- { name: toad, img: toad.gif, size: 64, url: "https://glosse.me" }
+- { name: caterpillar, img: caterpillar.gif, size: 64, url: "https://glosse.me" }
+- { name: dragonfly, img: dragonfly.gif, size: 64, url: "https://glosse.me" }
+- { name: ant, img: ant.gif, size: 64, url: "https://glosse.me" }
+- { name: spider, img: spider.gif, size: 64, url: "https://glosse.me" }
+- { name: worm, img: worm.gif, size: 64, url: "https://glosse.me" }
+- { name: hedgehog, img: hedgehog.gif, size: 64, url: "https://glosse.me" }
+- { name: mouse, img: mouse.gif, size: 64, url: "https://glosse.me" }
+- { name: rabbit, img: rabbit.gif, size: 64, url: "https://glosse.me" }
+- { name: squirrel, img: squirrel.gif, size: 64, url: "https://glosse.me" }
+- { name: mole, img: mole.gif, size: 64, url: "https://glosse.me" }
+- { name: robin, img: robin.gif, size: 64, url: "https://glosse.me" }
+- { name: owl, img: owl.gif, size: 64, url: "https://glosse.me" }
+- { name: moth, img: moth.gif, size: 64, url: "https://glosse.me" }
+- { name: firefly, img: firefly.gif, size: 64, url: "https://glosse.me" }
+- { name: beetle, img: beetle.gif, size: 64, url: "https://glosse.me" }
+- { name: grasshopper, img: grasshopper.gif, size: 64, url: "https://glosse.me" }
+- { name: slug, img: slug.gif, size: 64, url: "https://glosse.me" }
+- { name: cat, img: cat.gif, size: 64, url: "https://glosse.me" }
+- { name: fox, img: fox.gif, size: 64, url: "https://glosse.me" }
+- { name: bat, img: bat.gif, size: 64, url: "https://glosse.me" }
+- { name: hummingbird, img: hummingbird.gif, size: 64, url: "https://glosse.me" }
+- { name: lizard, img: lizard.gif, size: 64, url: "https://glosse.me" }
+- { name: tortoise, img: tortoise.gif, size: 64, url: "https://glosse.me" }
+- { name: mantis, img: mantis.gif, size: 64, url: "https://glosse.me" }

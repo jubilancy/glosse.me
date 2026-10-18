@@ -8,7 +8,7 @@ scripts:
 ---
 <div id="toybox">
 {%- for b in site.data.toybox %}
-  <a href="{{ b.url }}" title="{{ b.name }}"><img src="{{ '/assets/toybox/' | append: b.img | relative_url }}" width="{{ b.size }}" height="{{ b.size }}" alt="{{ b.name }}"></a>
+  <a href="{{ b.url }}" title="{{ b.name }}"><img src="{{ '/assets/critters/gif/' | append: b.img | relative_url }}" width="{{ b.size }}" height="{{ b.size }}" alt="{{ b.name }}"></a>
 {%- endfor %}
 </div>
 <p class="toybox-credit">Click any beast to travel to its source. <a href="https://web.archive.org/web/20250608132941/https://github.com/dantescanline/toybox/blob/master/toybox.js">Toybox.js</a> by DanteScanline.</p>

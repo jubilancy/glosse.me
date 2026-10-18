@@ -186,7 +186,7 @@
   z-index: 30 !important;
 }
 
-#toybox img { display: block; }
+#toybox img { display: block; image-rendering: pixelated; }
 
 .toybox-credit {
   margin: 1rem 0 0;

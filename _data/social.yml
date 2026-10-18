@@ -1,4 +1,4 @@
-# Footer links. `icon` is a file in assets/icons/ (without .svg).
+# Footer links. `icon` names a file in _includes/icons/ (without .html).
 - { title: github,  url: "https://github.com/jubilancy", icon: github }
 - { title: bluesky, url: "https://bsky.app/profile/basedgirl.bsky.social", icon: bluesky }
 - { title: greenhouse, url: "/greenhouse/", icon: greenhouse }

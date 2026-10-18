@@ -1,0 +1,12 @@
+{%- comment -%} Drifting dust motes: pure CSS, positions/speeds derived from the loop index so the build stays deterministic. {%- endcomment -%}
+<div class="motes" aria-hidden="true">
+{%- for i in (1..32) -%}
+  {%- assign x = i | times: 37 | modulo: 97 | plus: 1 -%}
+  {%- assign size = i | times: 7 | modulo: 4 | plus: 2 -%}
+  {%- assign dur = i | times: 11 | modulo: 23 | plus: 28 -%}
+  {%- assign delay = i | times: 13 | modulo: 31 | times: -1 -%}
+  {%- assign sway = i | times: 17 | modulo: 80 | minus: 40 -%}
+  {%- assign alpha = i | times: 5 | modulo: 5 | plus: 2 -%}
+  <i style="--x:{{ x }}%;--s:{{ size }}px;--d:{{ dur }}s;--t:{{ delay }}s;--w:{{ sway }}px;--o:0.{{ alpha }}"></i>
+{%- endfor -%}
+</div>

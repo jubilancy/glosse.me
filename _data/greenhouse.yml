@@ -1,6 +1,7 @@
 # Data-only page: /greenhouse/ renders this as shelves of 250x250 "pots".
 # To add a pot, append a line. `embed` is the friend's /webgarden.html;
 # leave it out to frame the site's home page instead.
+# CREDITS to [ribo.zone's neighborhood](https://ribo.zone/neighborhood)
 items:
   - { name: glosse.me,       url: "https://glosse.me/",                    embed: "https://glosse.me/webgarden.html" }
   - { name: micahrl.com,     url: "https://me.micahrl.com/",               embed: "https://me.micahrl.com/webgarden.html" }

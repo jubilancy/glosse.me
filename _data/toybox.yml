@@ -1,0 +1,12 @@
+# Beasts for /toybox/. Each beast is an image in assets/toybox/ and the page it
+# travels to when clicked (its source). `size` is the display width in px.
+- { name: cat,   img: cat.svg,   size: 84, url: "https://feed.glosse.me" }
+- { name: frog,  img: frog.svg,  size: 80, url: "https://tools.glosse.me" }
+- { name: snail, img: snail.svg, size: 76, url: "https://gallery.glosse.me" }
+- { name: fish,  img: fish.svg,  size: 82, url: "https://obscura.glosse.me" }
+- { name: moth,  img: moth.svg,  size: 78, url: "https://commons.glosse.me" }
+- { name: jelly, img: jelly.svg, size: 88, url: "https://stacks.glosse.me" }
+- { name: bee,   img: bee.svg,   size: 66, url: "https://jubilancy.github.io/foto/" }
+- { name: ghost, img: ghost.svg, size: 84, url: "https://jubilancy.github.io/nook/" }
+- { name: duck,  img: duck.svg,  size: 80, url: "https://jubilancy.github.io/awesome" }
+- { name: crab,  img: crab.svg,  size: 86, url: "https://jubilancy.github.io/quotes" }

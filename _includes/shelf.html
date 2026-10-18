@@ -1,12 +1,30 @@
+<div class="greenhouse">
+  <div class="glass" aria-hidden="true">
+    {%- for i in (1..16) %}
+    {%- assign left = i | times: 47 | modulo: 94 | plus: 2 %}
+    {%- assign top = i | times: 29 | modulo: 88 %}
+    {%- assign size = i | times: 7 | modulo: 6 | plus: 5 %}
+    {%- assign dur = i | times: 3 | modulo: 11 | plus: 14 %}
+    {%- assign delay = i | times: 5 | modulo: 17 | times: -1 %}
+    {%- assign run = i | times: 13 | modulo: 60 | plus: 40 %}
+    <i style="--l:{{ left }}%;--tp:{{ top }}%;--s:{{ size }}px;--d:{{ dur }}s;--t:{{ delay }}s;--run:{{ run }}px"></i>
+    {%- endfor %}
+  </div>
 {%- for i in include.items %}
 {%- assign col = forloop.index0 | modulo: 2 %}
 {%- if col == 0 %}<div class="shelf-row">{% endif %}
-  <div class="pot">
-    <iframe src="{{ i.embed | default: i.url }}" title="{{ i.name }}" scrolling="no" loading="lazy"
-      sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox" referrerpolicy="no-referrer"></iframe>
+  <div class="pot-wrap">
+    <svg class="can" viewBox="0 0 28 20" aria-hidden="true"><path d="M4 6h14v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM18 9l8-5 1 2-9 7M4 8C0 8 0 14 4 14"/></svg>
+    <span class="drops" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+    <svg class="sprout" viewBox="0 0 24 28" aria-hidden="true"><path class="stem" d="M12 28V14"/><path class="leaf l" d="M12 16C6 16 3 12 3 8c5 0 9 3 9 8z"/><path class="leaf r" d="M12 13c0-5 3-9 9-9 0 5-3 9-9 9z"/></svg>
+    <div class="pot">
+      <iframe src="{{ i.embed | default: i.url }}" title="{{ i.name }}" scrolling="no" loading="lazy"
+        sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox" referrerpolicy="no-referrer"></iframe>
+    </div>
   </div>
 {%- if col == 1 or forloop.last %}</div>{% endif %}
 {%- endfor %}
+</div>
 
 <section>
   <div class="section-heading"><span>every pot</span></div>

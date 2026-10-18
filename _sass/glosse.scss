@@ -466,13 +466,51 @@ footer {
 footer a { color: var(--muted); }
 
 footer .icon-link { display: inline-flex; vertical-align: middle; margin: 0 0.3rem; }
-footer .icon {
-  width: 1.1rem;
-  height: 1.1rem;
-  background-color: currentColor;
-  -webkit-mask: var(--icon) center / contain no-repeat;
-  mask: var(--icon) center / contain no-repeat;
+footer .icon { width: 1.1rem; height: 1.1rem; overflow: visible; }
+
+/* icons: static by default, animated on hover/focus (github: once on load) */
+.icon-github path {
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 0.4;
+  stroke-linejoin: round;
+  stroke-dasharray: 1 2;
+  animation: gh-trace 2.2s ease-out both;
 }
+@keyframes gh-trace {
+  from { stroke-dashoffset: 1; fill-opacity: 0; }
+  60%  { stroke-dashoffset: 0; fill-opacity: 0; }
+  to   { stroke-dashoffset: 0; fill-opacity: 1; }
+}
+
+.icon-bluesky path {
+  fill: currentColor;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.icon-link:hover .icon-bluesky path,
+.icon-link:focus-visible .icon-bluesky path { animation: wing-flap 1.2s ease-in-out infinite; }
+@keyframes wing-flap {
+  50% { transform: scaleX(0.55); }
+}
+
+.icon-greenhouse path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1 2;
+}
+.icon-greenhouse .leaf { stroke-dasharray: none; transform-origin: 12px 13px; }
+.icon-link:hover .icon-greenhouse .soil,
+.icon-link:focus-visible .icon-greenhouse .soil { animation: sprout-draw 0.3s ease-out backwards; }
+.icon-link:hover .icon-greenhouse .stem,
+.icon-link:focus-visible .icon-greenhouse .stem { animation: sprout-draw 0.8s 0.15s ease-out backwards; }
+.icon-link:hover .icon-greenhouse .leaf,
+.icon-link:focus-visible .icon-greenhouse .leaf { animation: sprout-unfurl 0.6s 0.6s ease-out backwards; }
+@keyframes sprout-draw { from { stroke-dashoffset: 1; } }
+@keyframes sprout-unfurl { from { transform: scale(0) rotate(-35deg); opacity: 0; } }
 
 /* ---------- a11y + responsive ---------- */
 

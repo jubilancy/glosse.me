@@ -34,8 +34,8 @@ lede: messages i've received, in one river. Fetched when the site builds, so it'
       padding: 0.7rem 0.8rem;
       background: var(--card);
       color: var(--fg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
+      border: 1px dashed var(--muted);
+      border-radius: 4px;
       font: inherit;
       font-size: 0.9rem;
       line-height: 1.5;
@@ -51,8 +51,8 @@ lede: messages i've received, in one river. Fetched when the site builds, so it'
     .guestbook-form input[type="email"]:focus,
     .guestbook-form textarea:focus {
       border-color: var(--fg);
+      border-style: dotted;
       outline: none;
-      box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.05);
     }
 
     .guestbook-form input[type="submit"] {

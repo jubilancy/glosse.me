@@ -2,7 +2,19 @@
   <a class="site-title" href="/">{{ site.title }}</a>
   <nav>
     {%- for item in site.data.navigation %}{% if item.nav == false %}{% continue %}{% endif %}
+    {%- if item.children and item.children.size > 0 %}
+    <div class="dropdown">
+      <a href="{{ item.url }}"{% if page.url == item.url %} aria-current="page"{% endif %}>{{ item.title }}</a>
+      <button class="dropdown-toggle" aria-label="{{ item.title }} menu" aria-expanded="false">▾</button>
+      <ul class="dropdown-menu">
+        {%- for child in item.children %}
+        <li><a href="{{ child.url }}"{% if page.url == child.url %} aria-current="page"{% endif %}>{{ child.title }}</a></li>
+        {%- endfor %}
+      </ul>
+    </div>
+    {%- else %}
     <a href="{{ item.url }}"{% if page.url == item.url %} aria-current="page"{% endif %}>{{ item.title }}</a>
+    {%- endif %}
     {%- endfor %}
     <button class="theme-toggle" id="themeToggle" aria-label="Switch between light and dark">◐</button>
   </nav>

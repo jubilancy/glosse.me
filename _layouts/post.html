@@ -7,7 +7,7 @@ layout: page
   · <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%b %-d, %Y" }}</time>
   {%- if page.updated %} · updated <time datetime="{{ page.updated | date_to_xmlschema }}">{{ page.updated | date: "%b %-d, %Y" }}</time>{% endif %}
   · {% if words < 200 %}1 min{% else %}{{ words | divided_by: 200 | plus: 1 }} min{% endif %} read
-  {%- for t in page.tags %} · <span class="tag">#{{ t }}</span>{% endfor %}
+  {%- for t in page.tags %} · <a class="tag" href="/tags/{{ t | slugify }}/">#{{ t }}</a>{% endfor %}
 </p>
 <div class="prose">
 {{ content }}

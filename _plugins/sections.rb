@@ -25,7 +25,8 @@ module Glosse
       sections.each_value { |s| finish_section(s) }
       relink(sections)
       sections.each { |name, s| publish(name, s) }
-      add_nav(sections)
+      tags = add_tags(sections)
+      add_nav(sections, tags)
       add_feeds(sections)
 
       site.config["sections_feed"] = true
@@ -280,16 +281,75 @@ module Glosse
 
     # ---- nav -------------------------------------------------------------
 
-    def add_nav(sections)
+    # Header items for each section, each with a dropdown of its newest posts
+    # (`nav_recent` in _config.yml, default 5), plus a "tags" item when any post
+    # is tagged. An item already in navigation.yml keeps its place and gains the
+    # dropdown unless it defines its own `children`.
+    def add_nav(sections, tags)
       nav = (@site.data["navigation"] ||= [])
       header = @site.config.fetch("auto_nav", true)
+      count = (@site.config["nav_recent"] || 5).to_i
+
       sections.keys.sort.each do |name|
         url = "/#{name}/"
-        next if nav.any? { |n| n["url"] == url }
         meta = @meta[name].is_a?(Hash) ? @meta[name] : {}
-        show = meta.key?("nav") ? meta["nav"] : header
-        nav << { "title" => meta["title"] || name, "url" => url, "nav" => show ? true : false, "auto" => true }
+        kids = sections[name][:entries].first(count).map { |e| { "title" => e[:title], "url" => e[:url] } }
+        kids << { "title" => "all posts →", "url" => url }
+        item = nav.find { |n| n["url"] == url }
+        unless item
+          show = meta.key?("nav") ? meta["nav"] : header
+          item = { "title" => meta["title"] || name, "url" => url, "nav" => show ? true : false, "auto" => true }
+          nav << item
+        end
+        item["children"] ||= kids
       end
+
+      return if tags.empty? || nav.any? { |n| n["url"] == "/tags/" }
+      kids = tags.first(12).map { |t| { "title" => "#{t[:name]} (#{t[:entries].size})", "url" => t[:url] } }
+      kids << { "title" => "all tags →", "url" => "/tags/" }
+      nav << { "title" => "tags", "url" => "/tags/", "nav" => header ? true : false, "auto" => true, "children" => kids }
+    end
+
+    # ---- tags ------------------------------------------------------------
+
+    # /tags/ (every tag with its posts) and /tags/<tag>/ (one tag). Skipped if
+    # you made a /tags/ page yourself. Returns tags, most-used first.
+    def add_tags(sections)
+      all = sections.flat_map { |_, s| s[:entries] }
+      by_tag = Hash.new { |h, k| h[k] = [] }
+      all.each { |e| e[:tags].each { |t| by_tag[t] << e } }
+      return [] if by_tag.empty? || @site.pages.any? { |p| p.url == "/tags/" }
+
+      tags = by_tag.map do |name, entries|
+        slug = Jekyll::Utils.slugify(name)
+        next if slug.empty?
+        { name: name, slug: slug, url: "/tags/#{slug}/",
+          entries: entries.sort_by { |e| -e[:date].to_i } }
+      end.compact.uniq { |t| t[:slug] }
+      tags.sort_by! { |t| [-t[:entries].size, t[:name].downcase] }
+
+      index = Jekyll::PageWithoutAFile.new(@site, @site.source, "tags", "index.md")
+      index.content = ""
+      index.data.merge!(
+        "layout" => "tags", "title" => "tags", "permalink" => "/tags/",
+        "description" => "posts by tag on #{@site.config['title']}",
+        "render_with_liquid" => false,
+        "tag_list" => tags.map { |t| { "name" => t[:name], "url" => t[:url], "entries" => t[:entries].map { |e| entry_hash(e) } } }
+      )
+      @site.pages << index
+
+      tags.each do |t|
+        page = Jekyll::PageWithoutAFile.new(@site, @site.source, "tags/#{t[:slug]}", "index.md")
+        page.content = ""
+        page.data.merge!(
+          "layout" => "tag", "title" => "##{t[:name]}", "permalink" => t[:url],
+          "description" => "posts tagged #{t[:name]}",
+          "render_with_liquid" => false,
+          "entries" => t[:entries].map { |e| entry_hash(e) }
+        )
+        @site.pages << page
+      end
+      tags
     end
 
     # ---- feeds -----------------------------------------------------------

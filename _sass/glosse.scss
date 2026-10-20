@@ -1,10 +1,17 @@
+/* Luxi Mono (Bigelow & Holmes). Served unmodified, as the license requires;
+   see assets/fonts/luxi-mono/LICENSE.txt. */
+@font-face { font-family: "Luxi Mono"; font-style: normal; font-weight: 400; font-display: swap; src: url("/assets/fonts/luxi-mono/luximr.ttf") format("truetype"); }
+@font-face { font-family: "Luxi Mono"; font-style: normal; font-weight: 700; font-display: swap; src: url("/assets/fonts/luxi-mono/luximb.ttf") format("truetype"); }
+@font-face { font-family: "Luxi Mono"; font-style: italic; font-weight: 400; font-display: swap; src: url("/assets/fonts/luxi-mono/luximri.ttf") format("truetype"); }
+@font-face { font-family: "Luxi Mono"; font-style: italic; font-weight: 700; font-display: swap; src: url("/assets/fonts/luxi-mono/luximbi.ttf") format("truetype"); }
+
 :root {
   --bg: #fafafa;
   --fg: #111111;
   --muted: #6b7280;
   --border: #e5e5e5;
   --card: #ffffff;
-  --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  --mono: "Luxi Mono", "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 }
 
 [data-theme="dark"] {

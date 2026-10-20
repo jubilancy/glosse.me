@@ -10,14 +10,14 @@ social:
   name: eliana
   links:
     - https://github.com/jubilancy
-    - https://bsky.app/profile/basedgirl.bsky.social
+    - https://bsky.app/profile/glosse.me
 
 # Accounts the live pages read from (exposed to the browser as window.GLOSSE).
 github_user: jubilancy
 github_repo: jubilancy/glosse.me
-bluesky: basedgirl.bsky.social
+bluesky: glosse.me
 
-favicon: https://64.media.tumblr.com/d5ec28e365635b96f197feebc5393d35/89ea4a76136154b1-f3/s250x400/e5ab5e57bc4c5bea4fb5d3f656518f5943662c0b.gif
+favicon: https://www.favicon.cc/favicon/656/281/favicon.png
 
 permalink: pretty
 # Folders of markdown become sections automatically (see README, "Adding content").

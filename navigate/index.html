@@ -12,7 +12,7 @@ scripts: [/assets/js/navigate.js]
 {%- assign sizes = "s2 s4 s1 s3 s3 s2 s4 s3 s1 s4 s3 s2" | split: " " -%}
 <div class="nav-cloud" id="navCloud">
   {%- assign n = 0 -%}
-  {%- for item in site.data.navigation %}{% if item.nav == false %}{% continue %}{% endif %}
+  {%- for item in site.data.navigation %}{% if item.url == "/navigate/" %}{% continue %}{% endif %}
   <a class="{{ sizes[n] }}" href="{{ item.url }}">{{ item.title }}</a>{% assign n = n | plus: 1 %}
   {%- endfor %}
   {%- if has_posts > 0 %}

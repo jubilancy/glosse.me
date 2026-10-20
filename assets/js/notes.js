@@ -69,7 +69,7 @@ function renderNote(item) {
     '<div class="note-foot">' +
       '<span>' + timeAgo(post.record.createdAt) +
         (counts.length ? ' · ' + counts.join(' · ') : '') + '</span>' +
-      '<a href="' + url + '">reply on bluesky ↗</a>' +
+      '<a href="' + url + '" aria-label="reply on bluesky" title="reply on bluesky">💌</a>' +
     '</div>' +
   '</li>';
 }

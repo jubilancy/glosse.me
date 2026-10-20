@@ -55,19 +55,3 @@ function escapeHtml(s) {
     return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
   });
 }
-
-// Header dropdowns: the ▾ button toggles the menu (touch has no hover).
-document.addEventListener('DOMContentLoaded', function () {
-document.querySelectorAll('.dropdown-toggle').forEach(function (btn) {
-  btn.addEventListener('click', function (e) {
-    e.stopPropagation();
-    var box = btn.parentNode, open = !box.classList.contains('open');
-    document.querySelectorAll('.dropdown.open').forEach(function (d) { d.classList.remove('open'); });
-    box.classList.toggle('open', open);
-    btn.setAttribute('aria-expanded', open);
-  });
-});
-document.addEventListener('click', function () {
-  document.querySelectorAll('.dropdown.open').forEach(function (d) { d.classList.remove('open'); });
-});
-});

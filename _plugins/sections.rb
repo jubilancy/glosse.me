@@ -25,11 +25,15 @@ module Glosse
       sections.each_value { |s| finish_section(s) }
       relink(sections)
       sections.each { |name, s| publish(name, s) }
-      tags = add_tags(sections)
-      add_nav(sections, tags)
+      add_tags(sections)
+      add_indexes(sections)
+      add_nav(sections)
       add_feeds(sections)
 
       site.config["sections_feed"] = true
+      site.data["search_posts"] = sections.flat_map do |name, s|
+        s[:entries].map { |e| { "title" => e[:title], "url" => e[:url], "kind" => name } }
+      end
       lists = (site.data["terminal_lists"] ||= {})
       sections.each do |name, s|
         lists[name] = s[:entries].map { |e| { "title" => e[:title], "url" => e[:url], "date" => e[:date].strftime("%Y-%m-%d") } }
@@ -281,33 +285,18 @@ module Glosse
 
     # ---- nav -------------------------------------------------------------
 
-    # Header items for each section, each with a dropdown of its newest posts
-    # (`nav_recent` in _config.yml, default 5), plus a "tags" item when any post
-    # is tagged. An item already in navigation.yml keeps its place and gains the
-    # dropdown unless it defines its own `children`.
-    def add_nav(sections, tags)
+    # Sections join the navigate page (and the `~` terminal). An item already
+    # in navigation.yml keeps its place.
+    def add_nav(sections)
       nav = (@site.data["navigation"] ||= [])
       header = @site.config.fetch("auto_nav", true)
-      count = (@site.config["nav_recent"] || 5).to_i
-
       sections.keys.sort.each do |name|
         url = "/#{name}/"
+        next if nav.any? { |n| n["url"] == url }
         meta = @meta[name].is_a?(Hash) ? @meta[name] : {}
-        kids = sections[name][:entries].first(count).map { |e| { "title" => e[:title], "url" => e[:url] } }
-        kids << { "title" => "all posts →", "url" => url }
-        item = nav.find { |n| n["url"] == url }
-        unless item
-          show = meta.key?("nav") ? meta["nav"] : header
-          item = { "title" => meta["title"] || name, "url" => url, "nav" => show ? true : false, "auto" => true }
-          nav << item
-        end
-        item["children"] ||= kids
+        show = meta.key?("nav") ? meta["nav"] : header
+        nav << { "title" => meta["title"] || name, "url" => url, "nav" => show ? true : false, "auto" => true }
       end
-
-      return if tags.empty? || nav.any? { |n| n["url"] == "/tags/" }
-      kids = tags.first(12).map { |t| { "title" => "#{t[:name]} (#{t[:entries].size})", "url" => t[:url] } }
-      kids << { "title" => "all tags →", "url" => "/tags/" }
-      nav << { "title" => "tags", "url" => "/tags/", "nav" => header ? true : false, "auto" => true, "children" => kids }
     end
 
     # ---- tags ------------------------------------------------------------
@@ -350,6 +339,43 @@ module Glosse
         @site.pages << page
       end
       tags
+    end
+
+    # /posts/ (everything, newest first), /categories/ (one per folder) and
+    # /archives/ (by month). Skipped where you made a page at that URL yourself.
+    def add_indexes(sections)
+      all = sections.flat_map { |_, s| s[:entries] }.sort_by { |e| -e[:date].to_i }
+      made = ->(url) { @site.pages.any? { |p| p.url == url } }
+
+      unless made.("/posts/")
+        generated("posts", "posts", "layout" => "posts", "entries" => all.map { |e| entry_hash(e) })
+      end
+
+      unless made.("/categories/")
+        cats = sections.map do |name, s|
+          meta = @meta[name].is_a?(Hash) ? @meta[name] : {}
+          { "name" => meta["title"] || name, "url" => "/#{name}/", "entries" => s[:entries].map { |e| entry_hash(e) } }
+        end
+        generated("categories", "categories", "layout" => "categories", "groups" => cats.sort_by { |c| [-c["entries"].size, c["name"]] })
+      end
+
+      unless made.("/archives/")
+        months = all.group_by { |e| e[:date].strftime("%Y-%m") }.sort.reverse.map do |key, list|
+          { "name" => Time.parse(key + "-01").strftime("%B %Y"), "entries" => list.map { |e| entry_hash(e) } }
+        end
+        generated("archives", "archives", "layout" => "categories", "groups" => months)
+      end
+    end
+
+    def generated(dir, title, data)
+      page = Jekyll::PageWithoutAFile.new(@site, @site.source, dir, "index.md")
+      page.content = ""
+      page.data.merge!(
+        "title" => title, "permalink" => "/#{dir}/", "render_with_liquid" => false,
+        "description" => "#{title} on #{@site.config['title']}"
+      )
+      page.data.merge!(data)
+      @site.pages << page
     end
 
     # ---- feeds -----------------------------------------------------------

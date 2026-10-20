@@ -113,22 +113,45 @@ nav a[aria-current="page"] {
 
 .theme-toggle:hover { border-color: var(--muted); }
 
-/* dropdown menus: hover, keyboard focus, or the ▾ button (touch) */
-.dropdown { position: relative; display: inline-flex; align-items: center; gap: 0.15rem; }
-.dropdown-toggle {
-  background: none; border: 0; padding: 0 0.1rem; cursor: pointer;
-  color: var(--muted); font: inherit; font-size: 0.7rem;
+.nav-button {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.3rem 0.8rem;
+  color: var(--fg);
 }
-.dropdown-toggle:hover { color: var(--fg); }
-.dropdown-menu {
-  display: none; position: absolute; top: 100%; right: 0; z-index: 10;
-  min-width: 11rem; margin: 0; padding: 0.35rem 0; list-style: none;
-  background: var(--card); border: 1px solid var(--border); border-radius: 6px;
+nav a.nav-button:hover { border-color: var(--muted); }
+
+/* ---------- navigate page ---------- */
+
+.nav-search {
+  width: 100%;
+  font: inherit;
+  padding: 0.6rem 0.8rem;
+  color: var(--fg);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
 }
-.dropdown-menu a { display: block; padding: 0.25rem 0.85rem; white-space: nowrap; }
-.dropdown:hover .dropdown-menu,
-.dropdown:focus-within .dropdown-menu,
-.dropdown.open .dropdown-menu { display: block; }
+.nav-search:focus { outline: none; border-color: var(--muted); }
+.nav-results { list-style: none; margin: 0.75rem 0 0; padding: 0; }
+.nav-results li a { display: flex; justify-content: space-between; gap: 1rem; padding: 0.25rem 0; text-decoration: none; color: var(--fg); }
+.nav-results .kind { color: var(--muted); font-size: 0.8rem; }
+.nav-results[hidden], .nav-cloud[hidden] { display: none; }
+.nav-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.6rem 1.4rem;
+  margin: 3rem 0 1rem;
+  line-height: 1.2;
+}
+.nav-cloud a { color: var(--muted); text-decoration: none; transition: color 0.15s ease; }
+.nav-cloud a:hover, .nav-cloud a:focus-visible { color: var(--fg); }
+.nav-cloud .s1 { font-size: 1.9rem; }
+.nav-cloud .s2 { font-size: 1.3rem; }
+.nav-cloud .s3 { font-size: 1rem; }
+.nav-cloud .s4 { font-size: 0.85rem; }
 
 /* ---------- typography ---------- */
 

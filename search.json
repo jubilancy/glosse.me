@@ -1,0 +1,20 @@
+---
+sitemap: false
+---
+[
+{%- assign first = true -%}
+{%- for item in site.data.navigation %}{% unless first %},{% endunless %}{% assign first = false %}
+{"title": {{ item.title | jsonify }}, "url": {{ item.url | jsonify }}, "kind": "page"}
+{%- endfor %}
+{%- for e in site.data.search_posts %},
+{"title": {{ e.title | jsonify }}, "url": {{ e.url | jsonify }}, "kind": {{ e.kind | jsonify }}}
+{%- endfor %}
+{%- assign tag_pages = site.pages | where: "layout", "tag" -%}
+{%- for t in tag_pages %},
+{"title": {{ t.title | jsonify }}, "url": {{ t.url | jsonify }}, "kind": "tag"}
+{%- endfor %}
+{%- assign extras = "posts,categories,tags,archives" | split: "," -%}
+{%- for extra in extras %}{% assign u = extra | prepend: "/" | append: "/" %}{% assign pg = site.pages | where: "url", u | size %}{% if pg > 0 %},
+{"title": {{ extra | jsonify }}, "url": {{ u | jsonify }}, "kind": "page"}
+{%- endif %}{% endfor %}
+]

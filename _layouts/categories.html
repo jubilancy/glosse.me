@@ -1,0 +1,7 @@
+---
+layout: page
+---
+{%- for g in page.groups %}
+<h2 class="tag-heading">{% if g.url %}<a href="{{ g.url }}">{{ g.name }}</a>{% else %}{{ g.name }}{% endif %} <span class="tag">{{ g.entries | size }}</span></h2>
+{% include entry-list.html entries=g.entries %}
+{%- endfor %}

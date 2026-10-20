@@ -1,9 +1,14 @@
 <header>
   <a class="site-title" href="/">{{ site.title }}</a>
   <nav>
-    {%- for item in site.data.navigation %}{% if item.nav == false %}{% continue %}{% endif %}
-    <a href="{{ item.url }}"{% if page.url == item.url %} aria-current="page"{% endif %}>{{ item.title }}</a>
-    {%- endfor %}
+    <span class="bee-track" aria-hidden="true">
+      <span class="bee-run">
+        <span class="bee-trail">· · · · · · · · · · · ·</span>
+        <span class="bee"><span class="w1">}°v°{</span><span class="w2">{°v°}</span></span>
+      </span>
+      <span class="bee-arrow">&gt;</span>
+    </span>
+    <a class="nav-button" href="/navigate/"{% if page.url == "/navigate/" %} aria-current="page"{% endif %}>navigate</a>
     <button class="theme-toggle" id="themeToggle" aria-label="Switch between light and dark">◐</button>
   </nav>
 </header>

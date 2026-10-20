@@ -1,0 +1,7 @@
+---
+layout: page
+---
+{%- for t in page.tag_list %}
+<h2 class="tag-heading"><a href="{{ t.url }}">#{{ t.name }}</a> <span class="tag">{{ t.entries | size }}</span></h2>
+{% include entry-list.html entries=t.entries %}
+{%- endfor %}

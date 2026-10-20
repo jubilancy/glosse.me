@@ -49,6 +49,7 @@ The build (`_plugins/sections.rb`) generates, per folder: post pages at `/though
 - **No front matter needed.** Title = first `# heading` (else the filename), description = first paragraph, date = `YYYY-MM-DD-` filename prefix, else `date:`, else the file's first git commit. Optional front matter: `title`, `description`, `date`, `updated`, `tags: [a, b]`, `draft: true`.
 - **Scheduling:** a post with an explicit future date stays hidden until that day; the daily rebuild publishes it.
 - **Relative images and links work:** `![](pic.png)` and `[other](other-note.md)` are rewritten to the right URLs. Liquid (`{{ }}`) in posts is left alone.
+- **Tags, navigate page:** `tags: [a, b]` in front matter builds `/tags/` and `/tags/<tag>/` (tags never appear in the header). The header has one `navigate` button to `/navigate/`: a search box (over `/search.json`) and a link cloud of every page in `_data/navigation.yml` plus `/posts/`, `/categories/` (one per folder) and `/archives/`.
 - **Header/terminal:** new sections join the header automatically. Set `auto_nav: false` in `_config.yml` for terminal-only, or add `_data/sections.yml` (`thoughts: { title: "my thoughts", lede: "…", nav: false }`) to customise one. Add a section to `_data/navigation.yml` yourself to control its position.
 - **Not a section:** folders with only an `index.*` (about, notes, projects…), `README.md` files, and anything in `sections_ignore` (`_config.yml`).
 

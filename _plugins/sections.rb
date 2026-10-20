@@ -25,10 +25,15 @@ module Glosse
       sections.each_value { |s| finish_section(s) }
       relink(sections)
       sections.each { |name, s| publish(name, s) }
+      add_tags(sections)
+      add_indexes(sections)
       add_nav(sections)
       add_feeds(sections)
 
       site.config["sections_feed"] = true
+      site.data["search_posts"] = sections.flat_map do |name, s|
+        s[:entries].map { |e| { "title" => e[:title], "url" => e[:url], "kind" => name } }
+      end
       lists = (site.data["terminal_lists"] ||= {})
       sections.each do |name, s|
         lists[name] = s[:entries].map { |e| { "title" => e[:title], "url" => e[:url], "date" => e[:date].strftime("%Y-%m-%d") } }
@@ -280,6 +285,8 @@ module Glosse
 
     # ---- nav -------------------------------------------------------------
 
+    # Sections join the navigate page (and the `~` terminal). An item already
+    # in navigation.yml keeps its place.
     def add_nav(sections)
       nav = (@site.data["navigation"] ||= [])
       header = @site.config.fetch("auto_nav", true)
@@ -290,6 +297,85 @@ module Glosse
         show = meta.key?("nav") ? meta["nav"] : header
         nav << { "title" => meta["title"] || name, "url" => url, "nav" => show ? true : false, "auto" => true }
       end
+    end
+
+    # ---- tags ------------------------------------------------------------
+
+    # /tags/ (every tag with its posts) and /tags/<tag>/ (one tag). Skipped if
+    # you made a /tags/ page yourself. Returns tags, most-used first.
+    def add_tags(sections)
+      all = sections.flat_map { |_, s| s[:entries] }
+      by_tag = Hash.new { |h, k| h[k] = [] }
+      all.each { |e| e[:tags].each { |t| by_tag[t] << e } }
+      return [] if by_tag.empty? || @site.pages.any? { |p| p.url == "/tags/" }
+
+      tags = by_tag.map do |name, entries|
+        slug = Jekyll::Utils.slugify(name)
+        next if slug.empty?
+        { name: name, slug: slug, url: "/tags/#{slug}/",
+          entries: entries.sort_by { |e| -e[:date].to_i } }
+      end.compact.uniq { |t| t[:slug] }
+      tags.sort_by! { |t| [-t[:entries].size, t[:name].downcase] }
+
+      index = Jekyll::PageWithoutAFile.new(@site, @site.source, "tags", "index.md")
+      index.content = ""
+      index.data.merge!(
+        "layout" => "tags", "title" => "tags", "permalink" => "/tags/",
+        "description" => "posts by tag on #{@site.config['title']}",
+        "render_with_liquid" => false,
+        "tag_list" => tags.map { |t| { "name" => t[:name], "url" => t[:url], "entries" => t[:entries].map { |e| entry_hash(e) } } }
+      )
+      @site.pages << index
+
+      tags.each do |t|
+        page = Jekyll::PageWithoutAFile.new(@site, @site.source, "tags/#{t[:slug]}", "index.md")
+        page.content = ""
+        page.data.merge!(
+          "layout" => "tag", "title" => "##{t[:name]}", "permalink" => t[:url],
+          "description" => "posts tagged #{t[:name]}",
+          "render_with_liquid" => false,
+          "entries" => t[:entries].map { |e| entry_hash(e) }
+        )
+        @site.pages << page
+      end
+      tags
+    end
+
+    # /posts/ (everything, newest first), /categories/ (one per folder) and
+    # /archives/ (by month). Skipped where you made a page at that URL yourself.
+    def add_indexes(sections)
+      all = sections.flat_map { |_, s| s[:entries] }.sort_by { |e| -e[:date].to_i }
+      made = ->(url) { @site.pages.any? { |p| p.url == url } }
+
+      unless made.("/posts/")
+        generated("posts", "posts", "layout" => "posts", "entries" => all.map { |e| entry_hash(e) })
+      end
+
+      unless made.("/categories/")
+        cats = sections.map do |name, s|
+          meta = @meta[name].is_a?(Hash) ? @meta[name] : {}
+          { "name" => meta["title"] || name, "url" => "/#{name}/", "entries" => s[:entries].map { |e| entry_hash(e) } }
+        end
+        generated("categories", "categories", "layout" => "categories", "groups" => cats.sort_by { |c| [-c["entries"].size, c["name"]] })
+      end
+
+      unless made.("/archives/")
+        months = all.group_by { |e| e[:date].strftime("%Y-%m") }.sort.reverse.map do |key, list|
+          { "name" => Time.parse(key + "-01").strftime("%B %Y"), "entries" => list.map { |e| entry_hash(e) } }
+        end
+        generated("archives", "archives", "layout" => "categories", "groups" => months)
+      end
+    end
+
+    def generated(dir, title, data)
+      page = Jekyll::PageWithoutAFile.new(@site, @site.source, dir, "index.md")
+      page.content = ""
+      page.data.merge!(
+        "title" => title, "permalink" => "/#{dir}/", "render_with_liquid" => false,
+        "description" => "#{title} on #{@site.config['title']}"
+      )
+      page.data.merge!(data)
+      @site.pages << page
     end
 
     # ---- feeds -----------------------------------------------------------

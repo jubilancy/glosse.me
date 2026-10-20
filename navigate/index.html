@@ -1,0 +1,28 @@
+---
+layout: page
+title: navigate
+description: Search the site or jump to any section.
+scripts: [/assets/js/navigate.js]
+---
+{%- assign has_posts = site.pages | where: "url", "/posts/" | size -%}
+{%- assign has_tags = site.pages | where: "url", "/tags/" | size -%}
+<input class="nav-search" id="navSearch" type="search" placeholder="search pages, posts and tags" autocomplete="off" aria-label="search" autofocus>
+<ul class="nav-results" id="navResults" hidden></ul>
+
+{%- assign sizes = "s2 s4 s1 s3 s3 s2 s4 s3 s1 s4 s3 s2" | split: " " -%}
+<div class="nav-cloud" id="navCloud">
+  {%- assign n = 0 -%}
+  {%- for item in site.data.navigation %}{% if item.url == "/navigate/" %}{% continue %}{% endif %}
+  <a class="{{ sizes[n] }}" href="{{ item.url }}">{{ item.title }}</a>{% assign n = n | plus: 1 %}
+  {%- endfor %}
+  {%- if has_posts > 0 %}
+  <a class="{{ sizes[n] }}" href="/posts/">posts</a>{% assign n = n | plus: 1 %}
+  <a class="{{ sizes[n] }}" href="/categories/">categories</a>{% assign n = n | plus: 1 %}
+  {%- endif %}
+  {%- if has_tags > 0 %}
+  <a class="{{ sizes[n] }}" href="/tags/">tags</a>{% assign n = n | plus: 1 %}
+  {%- endif %}
+  {%- if has_posts > 0 %}
+  <a class="{{ sizes[n] }}" href="/archives/">archives</a>
+  {%- endif %}
+</div>

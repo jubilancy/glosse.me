@@ -306,7 +306,7 @@ module Glosse
       root = @site.config["url"].to_s.chomp("/")
       esc = ->(t) { CGI.escapeHTML(t.to_s) }
       updated = (entries.map { |e| e[:updated] || e[:date] }.max || @site.time).iso8601
-      xml = +%(<?xml version="1.0" encoding="utf-8"?>\n<feed xmlns="http://www.w3.org/2005/Atom">\n)
+      xml = +%(<?xml version="1.0" encoding="utf-8"?>\n<?xml-stylesheet type="text/xsl" href="/pretty-feed.xsl"?>\n<feed xmlns="http://www.w3.org/2005/Atom">\n)
       xml << "  <title>#{esc.(title)}</title>\n"
       xml << %(  <link href="#{esc.(root + url)}" rel="self"/>\n  <link href="#{esc.(root + '/')}"/>\n)
       xml << "  <id>#{esc.(root + url)}</id>\n  <updated>#{updated}</updated>\n"

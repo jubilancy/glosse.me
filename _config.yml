@@ -22,7 +22,7 @@ favicon: https://64.media.tumblr.com/d5ec28e365635b96f197feebc5393d35/89ea4a7613
 permalink: pretty
 # Folders of markdown become sections automatically (see README, "Adding content").
 auto_nav: true        # new sections appear in the header; false = terminal only
-sections_ignore: []   # top-level folders to never treat as sections
+sections_ignore: [content]   # top-level folders to never treat as sections (content/ holds one-off pages)
 
 plugins:
   - jekyll-sitemap

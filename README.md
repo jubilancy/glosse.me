@@ -51,7 +51,11 @@ The build (`_plugins/sections.rb`) generates, per folder: post pages at `/though
 - **Relative images and links work:** `![](pic.png)` and `[other](other-note.md)` are rewritten to the right URLs. Liquid (`{{ }}`) in posts is left alone.
 - **Tags, navigate page:** `tags: [a, b]` in front matter builds `/tags/` and `/tags/<tag>/` (tags never appear in the header). The header has one `navigate` button to `/navigate/`: a search box (over `/search.json`) and a link cloud of every page in `_data/navigation.yml` plus `/posts/`, `/categories/` (one per folder) and `/archives/`.
 - **Header/terminal:** new sections join the header automatically. Set `auto_nav: false` in `_config.yml` for terminal-only, or add `_data/sections.yml` (`thoughts: { title: "my thoughts", lede: "…", nav: false }`) to customise one. Add a section to `_data/navigation.yml` yourself to control its position.
-- **Not a section:** folders with only an `index.*` (about, notes, projects…), `README.md` files, and anything in `sections_ignore` (`_config.yml`).
+- **Not a section:** `README.md` files and anything in `sections_ignore` (`_config.yml`, which includes `content/`).
+
+### One-off pages
+
+Pages that aren't a section (about, ask, guestbook, projects…) live in `content/`, one file each, and keep their short URLs: `content/guestbook.md` is `/guestbook/`, `content/ask.html` is `/ask/`. `content/name/index.md` also works. `_plugins/content_dir.rb` does this; a page that sets its own `permalink:` is left alone. The home page (`index.html`) stays at the repo root.
 
 ### Reading, art and embeds
 

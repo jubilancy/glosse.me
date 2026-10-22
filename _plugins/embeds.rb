@@ -7,6 +7,7 @@ require_relative "linkmeta"
 #   https://vimeo.com/123  spotify  soundcloud  codepen        players
 #   https://bsky.app/profile/x/post/y          the post, rendered
 #   https://github.com/owner/repo              repo card (live stars)
+#   https://example.com/item/1/manifest.json   IIIF manifest, in the Mirador viewer
 #   https://example.com/pic.jpg  clip.mp4  song.mp3   image / video / audio
 #   any other https:// URL                     link card (title, blurb, image) read at build time
 #
@@ -80,6 +81,9 @@ module Glosse
       end
 
       case path
+      when %r{/manifest(?:\.json)?\z}i
+        src = "https://projectmirador.org/embed/?iiif-content=#{CGI.escape(url)}"
+        return [frame(src, "iiif viewer", "embed-iiif", url, 600), false]
       when LinkMeta::IMAGE_EXT
         return card(site, url) if url =~ LinkMeta::API_PAGE
         return [%(<figure class="embed embed-img"><a href="#{e.(url)}"><img src="#{e.(url)}" alt="" loading="lazy" referrerpolicy="no-referrer"></a></figure>), false]

@@ -122,7 +122,7 @@ module Glosse
       end
       title ||= humanize(slug_src)
 
-      explicit = parse_time(data["date"]) || file_date
+      explicit = parse_time(data["date"] || data["created"]) || file_date
       first, last = git_dates(c[:rel])
       date = explicit || first || mtime(c[:abs])
       updated = parse_time(data["updated"]) || last
@@ -140,8 +140,17 @@ module Glosse
         dir: ([top] + subdir).join("/"),
         url: "/" + ([top] + subdir + [slug]).join("/") + "/",
         path: "/" + c[:rel],
-        tags: Array(data["tags"]).map(&:to_s)
+        tags: Array(data["tags"]).map(&:to_s),
+        category: present(data["category"]),
+        source_url: present(data["source"]),
+        author: present(data["author"]),
+        published_on: ([true, false].include?(data["published"]) ? nil : parse_time(data["published"]))
       }
+    end
+
+    def present(val)
+      val = val.to_s.strip
+      val.empty? ? nil : val
     end
 
     def humanize(str)
@@ -240,6 +249,10 @@ module Glosse
           "date" => e[:date],
           "updated" => e[:updated],
           "tags" => e[:tags],
+          "category" => e[:category],
+          "source" => e[:source_url],
+          "author" => e[:author],
+          "published_on" => e[:published_on],
           "section" => name,
           "section_title" => meta["title"] || name,
           "permalink" => e[:url],
@@ -341,7 +354,7 @@ module Glosse
       tags
     end
 
-    # /posts/ (everything, newest first), /categories/ (one per folder) and
+    # /posts/ (everything, newest first), /categories/ (one per folder, or `category:`) and
     # /archives/ (by month). Skipped where you made a page at that URL yourself.
     def add_indexes(sections)
       all = sections.flat_map { |_, s| s[:entries] }.sort_by { |e| -e[:date].to_i }
@@ -352,9 +365,12 @@ module Glosse
       end
 
       unless made.("/categories/")
-        cats = sections.map do |name, s|
+        # a post's `category:` overrides its folder
+        cats = sections.flat_map do |name, s|
           meta = @meta[name].is_a?(Hash) ? @meta[name] : {}
-          { "name" => meta["title"] || name, "url" => "/#{name}/", "entries" => s[:entries].map { |e| entry_hash(e) } }
+          s[:entries].map { |e| [e[:category] || meta["title"] || name, e[:category] ? nil : "/#{name}/", e] }
+        end.group_by { |n, _, _| n }.map do |n, list|
+          { "name" => n, "url" => list.first[1], "entries" => list.map { |_, _, e| entry_hash(e) } }
         end
         generated("categories", "categories", "layout" => "categories", "groups" => cats.sort_by { |c| [-c["entries"].size, c["name"]] })
       end

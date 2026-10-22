@@ -46,7 +46,7 @@ thoughts/
 
 The build (`_plugins/sections.rb`) generates, per folder: post pages at `/thoughts/<slug>/`, an index at `/thoughts/` (newest first), prev/next links, Atom feeds (`/feed.xml` for everything, `/thoughts/feed.xml` per section), a header link, and a `~` terminal entry (`ls thoughts`, `cd thoughts/first-note`).
 
-- **No front matter needed.** Title = first `# heading` (else the filename), description = first paragraph, date = `YYYY-MM-DD-` filename prefix, else `date:`, else the file's first git commit. Optional front matter: `title`, `description`, `date`, `updated`, `tags: [a, b]`, `draft: true`.
+- **No front matter needed.** Title = first `# heading` (else the filename), description = first paragraph, date = `YYYY-MM-DD-` filename prefix, else `date:`, else the file's first git commit. Optional front matter: `title`, `description`, `date` (or `created`), `updated`, `tags: [a, b]`, `draft: true`, `category` (groups the post on `/categories/` instead of its folder), and for clippings `source` (URL), `author`, `published` (the original's date). Empty values are ignored.
 - **Scheduling:** a post with an explicit future date stays hidden until that day; the daily rebuild publishes it.
 - **Relative images and links work:** `![](pic.png)` and `[other](other-note.md)` are rewritten to the right URLs. Liquid (`{{ }}`) in posts is left alone.
 - **Tags, navigate page:** `tags: [a, b]` in front matter builds `/tags/` and `/tags/<tag>/` (tags never appear in the header). The header has one `navigate` button to `/navigate/`: a search box (over `/search.json`) and a link cloud of every page in `_data/navigation.yml` plus `/posts/`, `/categories/` (one per folder) and `/archives/`.

@@ -7,6 +7,10 @@ layout: page
   · <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%b %-d, %Y" }}</time>
   {%- if page.updated %} · updated <time datetime="{{ page.updated | date_to_xmlschema }}">{{ page.updated | date: "%b %-d, %Y" }}</time>{% endif %}
   · {% if words < 200 %}1 min{% else %}{{ words | divided_by: 200 | plus: 1 }} min{% endif %} read
+  {%- if page.author %} · by {{ page.author }}{% endif %}
+  {%- if page.published_on %} · originally <time datetime="{{ page.published_on | date_to_xmlschema }}">{{ page.published_on | date: "%b %-d, %Y" }}</time>{% endif %}
+  {%- if page.source %} · <a href="{{ page.source }}" rel="noopener">{{ page.source | remove: "https://" | remove: "http://" | split: "/" | first }} ↗</a>{% endif %}
+  {%- if page.category %} · {{ page.category }}{% endif %}
   {%- for t in page.tags %} · <a class="tag" href="/tags/{{ t | slugify }}/">#{{ t }}</a>{% endfor %}
 </p>
 <div class="prose">

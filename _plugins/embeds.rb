@@ -7,6 +7,8 @@ require_relative "linkmeta"
 #   https://vimeo.com/123  spotify  soundcloud  codepen        players
 #   https://bsky.app/profile/x/post/y          the post, rendered
 #   https://github.com/owner/repo              repo card (live stars)
+#   https://listenbrainz.org/user/name/        listening card (now playing, recent, top artists/tracks, activity)
+#                                              add ?range=this_week|week|this_month|month|this_year|year|all_time
 #   https://example.com/item/1/manifest.json   IIIF manifest, in the Mirador viewer
 #   https://example.com/pic.jpg  clip.mp4  song.mp3   image / video / audio
 #   any other https:// URL                     link card (title, blurb, image) read at build time
@@ -71,6 +73,12 @@ module Glosse
       when "bsky.app"
         if (m = path.match(%r{\A/profile/([^/]+)/post/([A-Za-z0-9]+)}))
           return [%(<blockquote class="embed embed-bsky" data-handle="#{e.(m[1])}" data-rkey="#{e.(m[2])}"><a href="#{e.(url)}" rel="noopener">#{e.(url)}</a></blockquote>), true]
+        end
+      when "listenbrainz.org"
+        if (m = path.match(%r{\A/user/([A-Za-z0-9_.-]+)/?\z}))
+          range = URI.decode_www_form(uri.query.to_s).to_h["range"].to_s
+          range = "" unless %w[this_week week this_month month this_year year all_time].include?(range)
+          return [%(<div class="embed embed-lb" data-user="#{e.(m[1])}" data-range="#{e.(range)}"><a href="#{e.(url)}" rel="noopener">listenbrainz.org/user/#{e.(m[1])}</a></div>), true]
         end
       when "github.com"
         parts = path.split("/").reject(&:empty?)

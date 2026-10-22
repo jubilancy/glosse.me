@@ -768,7 +768,34 @@ figure.embed { padding: 0; }
 .gh-name { font-weight: 600; }
 .gh-desc { color: var(--muted); line-height: 1.55; }
 
+.lb-card { display: flex; flex-direction: column; gap: 1rem; border: 1px solid var(--border); border-radius: 6px; padding: 0.9rem; font-size: 0.85rem; background: var(--card); }
+.lb-head { display: flex; align-items: baseline; gap: 0.5rem; text-decoration: none; color: var(--fg); }
+.lb-user { font-weight: 600; }
+.lb-site, .lb-sub, .lb-n, .lb-h, .lb-badge { color: var(--muted); font-size: 0.75rem; }
+.lb-total { margin-left: auto; font-size: 0.75rem; color: var(--muted); }
+.lb-head:hover .lb-user { text-decoration: underline; }
+.lb-now { display: flex; gap: 0.8rem; align-items: center; }
+.lb-now-info, .lb-recent-text, .lb-bar-text { display: flex; flex-direction: column; min-width: 0; gap: 0.1rem; }
+.lb-track { font-weight: 600; font-size: 0.95rem; }
+.lb-cover-lg { width: 72px; height: 72px; border-radius: 4px; flex-shrink: 0; object-fit: cover; background: var(--border); }
+.lb-cover { width: 34px; height: 34px; border-radius: 3px; flex-shrink: 0; object-fit: cover; background: var(--border); }
+.lb-nocover { display: inline-block; }
+.lb-sec { display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
+.lb-h { text-transform: lowercase; letter-spacing: 0.02em; }
+.lb-recent { display: flex; align-items: center; gap: 0.6rem; }
+.lb-recent-text { flex: 1; }
+.lb-bar-name, .lb-sub { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lb-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.lb-bar { position: relative; display: flex; align-items: center; gap: 0.5rem; padding: 0.25rem 0.4rem; border-radius: 3px; overflow: hidden; }
+.lb-bar i { position: absolute; inset: 0 auto 0 0; background: var(--border); z-index: 0; }
+.lb-bar-text { flex: 1; position: relative; z-index: 1; }
+.lb-bar .lb-n { position: relative; z-index: 1; }
+.lb-chart { display: flex; align-items: flex-end; gap: 2px; height: 48px; }
+.lb-chart i { flex: 1; background: var(--muted); opacity: 0.55; border-radius: 1px; min-width: 2px; }
+.lb-chart i:hover { opacity: 1; }
+
 @media (max-width: 560px) {
+  .lb-cols { grid-template-columns: 1fr; }
   .river .thumb { width: 48px; height: 48px; }
   .embed-card img { width: 84px; }
 }

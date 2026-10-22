@@ -11,6 +11,7 @@ require_relative "linkmeta"
 #                                              add ?range=this_week|week|this_month|month|this_year|year|all_time
 #   https://example.com/item/1/manifest.json   IIIF manifest, in the Mirador viewer
 #   https://example.com/pic.jpg  clip.mp4  song.mp3   image / video / audio
+#   any page that advertises oEmbed            its video/audio/rich player (iframe) or photo, read at build time
 #   any other https:// URL                     link card (title, blurb, image) read at build time
 #
 # A URL inside a sentence, or a [named](link), stays an ordinary link.
@@ -101,13 +102,66 @@ module Glosse
         return [%(<figure class="embed embed-audio"><audio controls preload="none" src="#{e.(url)}"></audio></figure>), false]
       end
 
-      card(site, url)
+      oembed(site, url) || card(site, url)
     rescue URI::Error
       nil
     end
 
-    def frame(src, title, klass, url, height = nil)
-      style = height ? %( style="height:#{height}px") : ""
+    OEMBED_TYPES = %w[video rich photo].freeze
+
+    # oEmbed discovery: a page can point at its endpoint with
+    # <link rel="alternate" type="application/json+oembed" href="...">. Only a photo or a plain
+    # iframe is used; the provider's own html is never injected, so anything that needs a
+    # script (or isn't https) falls back to the link card.
+    def oembed(site, url)
+      body, ct, final = Web.cached_get(site, url, accept: "text/html,application/xhtml+xml")
+      return nil unless body && ct.to_s =~ /html/i && body =~ /oembed/i
+
+      endpoint = oembed_endpoint(body[0, 600_000], final || url)
+      data = endpoint && Web.cached_json(site, endpoint)
+      return nil unless data.is_a?(Hash) && OEMBED_TYPES.include?(data["type"])
+
+      title = [data["title"], data["provider_name"], "embedded content"].find { |t| !t.to_s.strip.empty? }.to_s
+      e = ->(s) { CGI.escapeHTML(s.to_s) }
+      case data["type"]
+      when "photo"
+        src = data["url"].to_s
+        return nil unless src =~ %r{\Ahttps?://}i
+        [%(<figure class="embed embed-img"><a href="#{e.(url)}" rel="noopener"><img src="#{e.(src)}" alt="#{e.(title)}" loading="lazy" referrerpolicy="no-referrer"></a></figure>), false]
+      else
+        src = oembed_iframe(data["html"])
+        return nil unless src
+        w = data["width"].to_s[/\A\d+\z/].to_i
+        h = data["height"].to_s[/\A\d+\z/].to_i
+        if data["type"] == "video"
+          ratio = w >= 200 && h >= 100 ? "#{w} / #{h}" : "16 / 9"
+          [frame(src, title, "embed-oembed", url, nil, ratio), false]
+        else
+          [frame(src, title, "embed-oembed", url, (h.zero? ? 400 : h).clamp(80, 800)), false]
+        end
+      end
+    end
+
+    def oembed_endpoint(html, base)
+      html.scan(/<link\s[^>]*>/im).each do |tag|
+        attrs = {}
+        tag.scan(/([\w:.-]+)\s*=\s*(?:"([^"]*)"|'([^']*)')/m) { |k, v1, v2| attrs[k.downcase] = v1 || v2 }
+        next unless attrs["type"].to_s.downcase == "application/json+oembed" && attrs["href"]
+        href = Web.absolute(base, CGI.unescapeHTML(attrs["href"]))
+        return href if href && Web.http_url?(href)
+      end
+      nil
+    end
+
+    def oembed_iframe(html)
+      src = html.to_s[/<iframe\b[^>]*?\ssrc\s*=\s*(?:"([^"]*)"|'([^']*)')/im, 1] ||
+            html.to_s[/<iframe\b[^>]*?\ssrc\s*=\s*'([^']*)'/im, 1]
+      src = CGI.unescapeHTML(src.to_s).strip
+      src =~ %r{\Ahttps://[^\s"'<>]+\z}i ? src : nil
+    end
+
+    def frame(src, title, klass, url, height = nil, ratio = nil)
+      style = ratio ? %( style="aspect-ratio:#{ratio};height:auto") : (height ? %( style="height:#{height}px") : "")
       %(<figure class="embed #{klass}"><iframe src="#{CGI.escapeHTML(src)}" title="#{CGI.escapeHTML(title)}" loading="lazy" allowfullscreen) +
         %( allow="autoplay; encrypted-media; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin"#{style}></iframe>) +
         %(<figcaption><a href="#{CGI.escapeHTML(url)}" rel="noopener">open original ↗</a></figcaption></figure>)

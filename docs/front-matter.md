@@ -84,4 +84,4 @@ tags:
 
 ## Embeds in the body
 
-A URL alone on its own line becomes an embed: YouTube, Vimeo, Spotify, SoundCloud, CodePen, Bluesky posts, GitHub repo cards, ListenBrainz profiles (`https://listenbrainz.org/user/name/`, optional `?range=this_week|week|this_month|month|this_year|year|all_time`), IIIF manifests (`…/manifest.json`, shown in Mirador), images, video and audio files. Any other URL becomes a link card.
+A URL alone on its own line becomes an embed: YouTube, Vimeo, Spotify, SoundCloud, CodePen, Bluesky posts, GitHub repo cards, ListenBrainz profiles (`https://listenbrainz.org/user/name/`, optional `?range=this_week|week|this_month|month|this_year|year|all_time`), IIIF manifests (`…/manifest.json`, shown in Mirador), images, video and audio files. Any other page that advertises oEmbed becomes its player (an iframe) or photo; anything else becomes a link card.

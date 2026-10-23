@@ -281,3 +281,22 @@ footer { flex-wrap: wrap; }
 .prose details > :not(summary) { margin-inline: 0.9rem; }
 .prose details > summary + * { margin-top: 0.75rem; }
 .prose details > :last-child { margin-bottom: 0.9rem; }
+
+/* ---------- reading progress bar ---------- */
+.read-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 50;
+  pointer-events: none;
+}
+.read-progress[hidden] { display: none; }
+.read-progress i {
+  display: block;
+  height: 100%;
+  background: var(--fg);
+  transform: scaleX(0);
+  transform-origin: left;
+}

@@ -20,6 +20,8 @@ Drop a markdown file in a folder and push. No front matter is needed: the build 
 | `published` | The original's publish date, shown as "originally …". `published: false` hides the post | none |
 | `draft: true` | Not published | |
 | `layout` | Override the post layout | `post` |
+| `changefreq` | `<changefreq>` in `sitemap.xml` | by layout (posts `monthly`) |
+| `priority` | `<priority>` in `sitemap.xml`, 0.0 to 1.0 | by layout (posts `0.6`) |
 
 Notes:
 
@@ -68,6 +70,7 @@ tags:
 | `scripts: [/assets/js/x.js]` | Page-specific JS, loaded by the default layout |
 | `inline_script` | Inline JS block (supported, currently unused) |
 | `permalink` | Override the URL |
+| `changefreq`, `priority` | `sitemap.xml` hints (default `monthly` / `0.8`; home is `daily` / `1.0`) |
 
 ### Data-only pages (`layout: collection`)
 

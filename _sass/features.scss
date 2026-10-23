@@ -300,3 +300,58 @@ footer { flex-wrap: wrap; }
   transform: scaleX(0);
   transform-origin: left;
 }
+
+/* ---------- footnotes ---------- */
+/* kramdown's [^1] syntax: numbers in the text, notes collected at the bottom. */
+.prose sup { line-height: 0; }
+.prose a.footnote {
+  margin-left: 0.1em;
+  font-size: 0.8em;
+  color: var(--muted);
+  text-decoration: none;
+}
+.prose a.footnote:hover,
+.prose a.footnote:focus-visible { color: var(--fg); }
+
+.prose .footnotes {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.82rem;
+}
+.prose .footnotes::before {
+  content: "notes";
+  display: block;
+  margin-bottom: 0.6rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.prose .footnotes ol { margin: 0; padding-left: 1.4rem; }
+.prose .footnotes li { scroll-margin-top: 1.5rem; }
+.prose .footnotes li::marker { color: var(--muted); }
+.prose .footnotes p { margin: 0 0 0.4rem; font-size: inherit; line-height: 1.6; }
+.prose .footnotes li:target { color: var(--fg); }
+.prose .footnotes li:target p { color: var(--fg); }
+.prose .reversefootnote { color: var(--muted); text-decoration: none; }
+.prose .reversefootnote:hover { color: var(--fg); }
+.prose sup:target a.footnote { color: var(--fg); }
+.prose sup { scroll-margin-top: 4rem; }
+
+.fn-pop {
+  position: absolute;
+  z-index: 60;
+  max-width: min(22rem, calc(100vw - 16px));
+  padding: 0.6rem 0.8rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  color: var(--fg);
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+.fn-pop[hidden] { display: none; }
+.fn-pop p { margin: 0; }
+.fn-pop a { color: var(--fg); text-underline-offset: 3px; }

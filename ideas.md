@@ -132,5 +132,5 @@ Features borrowed from Quartz, split by what the Jekyll site already does and wh
 - [x] External link icons: small arrow on links that leave glosse.me
 - [x] Collapsible sections: `<details>`/`<summary>` styled for long lists in markdown
 - [x] Reading progress bar: thin line at the top that fills as you scroll
-- [ ] Footnotes system: academic-style footnotes at the bottom of posts
+- [x] Footnotes system: academic-style footnotes at the bottom of posts
 - [x] Sitemap: `<priority>` and `<changefreq>` on every URL

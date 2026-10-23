@@ -19,6 +19,23 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // Reading progress: a thin line that fills as you scroll. Hidden on short pages.
+  var progress = document.getElementById('readProgress');
+  if (progress) {
+    var fill = progress.firstElementChild, ticking = false;
+    var update = function () {
+      ticking = false;
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      progress.hidden = max < window.innerHeight * 0.5;
+      if (progress.hidden) return;
+      fill.style.transform = 'scaleX(' + Math.min(1, Math.max(0, window.scrollY / max)) + ')';
+    };
+    var queue = function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+    window.addEventListener('scroll', queue, { passive: true });
+    window.addEventListener('resize', queue);
+    update();
+  }
+
   var year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
 

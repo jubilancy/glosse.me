@@ -20,12 +20,17 @@ Drop a markdown file in a folder and push. No front matter is needed: the build 
 | `published` | The original's publish date, shown as "originally …". `published: false` hides the post | none |
 | `draft: true` | Not published | |
 | `layout` | Override the post layout | `post` |
+| `changefreq` | `<changefreq>` in `sitemap.xml` | by layout (posts `monthly`) |
+| `priority` | `<priority>` in `sitemap.xml`, 0.0 to 1.0 | by layout (posts `0.6`) |
 
 Notes:
 
 - A filename starting with `_` is never published.
 - `README.md` files and anything in `sections_ignore` (`_config.yml`, which includes `content/`) are not sections.
 - Relative images and links work, and Liquid (`{{ }}`) in posts is left alone.
+- Footnotes: write `text[^1]` and `[^1]: the note` anywhere in the post. Notes collect at the bottom, and hovering a number previews the note.
+- Collapsible sections: wrap long lists in `<details>` and `<summary>title</summary>`. Markdown works inside (no `markdown="1"` needed).
+- Links to other sites get a small ↗ automatically.
 - A clipper template with an empty `published:` is fine. Only an explicit `published: false` hides a page (`_plugins/published_key.rb`).
 
 Example clipping:
@@ -68,6 +73,7 @@ tags:
 | `scripts: [/assets/js/x.js]` | Page-specific JS, loaded by the default layout |
 | `inline_script` | Inline JS block (supported, currently unused) |
 | `permalink` | Override the URL |
+| `changefreq`, `priority` | `sitemap.xml` hints (default `monthly` / `0.8`; home is `daily` / `1.0`) |
 
 ### Data-only pages (`layout: collection`)
 

@@ -1,7 +1,17 @@
 ---
 layout: page
 ---
+{%- assign max = 1 -%}
+{%- for t in page.tag_list %}{% assign n = t.entries | size %}{% if n > max %}{% assign max = n %}{% endif %}{% endfor %}
+{%- comment %} Plain links until assets/js/tagcloud.js turns them into a spinning SVG sphere (skipped for reduced motion). {% endcomment %}
+<nav class="tag-cloud" id="tagCloud" aria-label="tag cloud" data-max="{{ max }}">
+  {%- for t in page.tag_list %}
+  <a href="{{ t.url }}" data-n="{{ t.entries | size }}">#{{ t.name }}</a>
+  {%- endfor %}
+</nav>
+<script src="{{ '/assets/js/tagcloud.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+
 {%- for t in page.tag_list %}
-<h2 class="tag-heading"><a href="{{ t.url }}">#{{ t.name }}</a> <span class="tag">{{ t.entries | size }}</span></h2>
+<h2 class="tag-heading" id="{{ t.url | split: '/' | last }}"><a href="{{ t.url }}">#{{ t.name }}</a> <span class="tag">{{ t.entries | size }}</span></h2>
 {% include entry-list.html entries=t.entries %}
 {%- endfor %}

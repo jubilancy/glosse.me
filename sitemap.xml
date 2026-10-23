@@ -1,0 +1,47 @@
+---
+sitemap: false
+---
+{%- comment -%}
+  Replaces jekyll-sitemap's template (the plugin steps aside when this file exists)
+  so every URL carries <changefreq> and <priority>. Defaults come from the page's
+  layout; set `changefreq:` / `priority:` in front matter to override one page.
+{%- endcomment -%}
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{%- assign pages = site.html_pages | where_exp: "p", "p.sitemap != false" | where_exp: "p", "p.url != '/404.html'" %}
+{%- for p in pages %}
+  {%- assign freq = "monthly" -%}
+  {%- assign prio = "0.8" -%}
+  {%- if p.url == "/" -%}
+    {%- assign freq = "daily" -%}{%- assign prio = "1.0" -%}
+  {%- elsif p.layout == "post" -%}
+    {%- assign freq = "monthly" -%}{%- assign prio = "0.6" -%}
+  {%- elsif p.layout == "section" or p.layout == "posts" or p.layout == "reading" -%}
+    {%- assign freq = "weekly" -%}{%- assign prio = "0.7" -%}
+  {%- elsif p.layout == "tags" or p.layout == "categories" -%}
+    {%- assign freq = "weekly" -%}{%- assign prio = "0.4" -%}
+  {%- elsif p.layout == "tag" -%}
+    {%- assign freq = "weekly" -%}{%- assign prio = "0.3" -%}
+  {%- endif -%}
+  {%- if p.changefreq %}{% assign freq = p.changefreq %}{% endif -%}
+  {%- if p.priority %}{% assign prio = p.priority | append: "" %}{% endif -%}
+  {%- assign mod = p.last_modified_at | default: p.updated | default: p.date %}
+  <url>
+    <loc>{{ p.url | replace: "/index.html", "/" | absolute_url | xml_escape }}</loc>
+    {%- if mod %}
+    <lastmod>{{ mod | date_to_xmlschema }}</lastmod>
+    {%- endif %}
+    <changefreq>{{ freq }}</changefreq>
+    <priority>{{ prio }}</priority>
+  </url>
+{%- endfor %}
+{%- assign statics = site.static_files | where: "extname", ".html" | where_exp: "f", "f.name != '404.html'" %}
+{%- for f in statics %}
+  <url>
+    <loc>{{ f.path | replace: "/index.html", "/" | absolute_url | xml_escape }}</loc>
+    <lastmod>{{ f.modified_time | date_to_xmlschema }}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+{%- endfor %}
+</urlset>

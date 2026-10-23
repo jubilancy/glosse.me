@@ -1,3 +1,7 @@
+---
+layout: page
+title: poetry terms
+---
 - [abecedarian](https://www.poetryfoundation.org/education/glossary/abecedarian)  
 - [accentual-syllabic-verse](https://www.poetryfoundation.org/education/glossary/accentual-syllabic-verse)  
 - [accentual-verse](https://www.poetryfoundation.org/education/glossary/accentual-verse)  

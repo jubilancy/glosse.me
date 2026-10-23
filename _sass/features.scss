@@ -234,3 +234,18 @@ footer { flex-wrap: wrap; }
 @media (max-width: 560px) {
   .term-prompt { display: none; }
 }
+
+/* ---------- external link icons ---------- */
+/* An arrow after inline links that leave glosse.me. Card-style rows (.link-list),
+   embeds and image links are left alone. */
+.prose a[href^="http"]:not([href^="https://glosse.me/"]):not([href="https://glosse.me"]):not([href^="http://glosse.me/"]):not([href^="https://www.glosse.me/"]):not(.link-list a):not(.embed a):not(.footnote):not(.reversefootnote):not(:has(img))::after {
+  content: "↗";
+  content: "↗" / "(external link)";
+  display: inline-block;
+  margin-left: 0.15em;
+  font-size: 0.75em;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+.prose a[href^="http"]:not(.link-list a):hover::after { color: var(--fg); transform: translate(1px, -1px); }

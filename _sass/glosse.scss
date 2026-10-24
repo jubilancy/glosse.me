@@ -230,12 +230,14 @@ h1.page-title {
   text-underline-offset: 3px;
 }
 
+.hero-link { display: block; width: fit-content; max-width: 100%; margin: 1rem auto 1.5rem; }
+
 .hero-gif {
   display: block;
+  width: 320px;
   max-width: 100%;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  margin: 1rem 0 1.5rem;
+  height: auto;
+  image-rendering: pixelated;
 }
 
 .lede a:hover,

@@ -1,7 +1,7 @@
 ---
 layout: art
-title: art
-description: Art I keep coming back to.
-lede: Art I keep coming back to. Each one is looked up from its link.
+title: Eclectic & Varied  
+description: art i keep coming back to :)
+lede: art i keep coming back to, each one is looked up from its link.
 scripts: [/assets/js/art.js]
 ---
